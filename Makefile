@@ -66,6 +66,6 @@ slick:  $(OBJslick)
 #       gfortran  -o  slick90run $(FFLAGS) $(OBJslick) $(PNAG) -framework IOKit -framework CoreFoundation -lc++
 #       gfortran  -o  slick90run $(FFLAGS) $(OBJslick) $(PNAG) -framework IOKit -framework CoreFoundation
 #	f95  -o  slick90run $(FFLAGS) $(OBJslick) $(PNAG)
-	gfortran  -o  slick90run $(FFLAGS) $(OBJslick) -llapack
+	gfortran  -o  slicktrack $(FFLAGS) $(OBJslick) -llapack
 
-clean: ;rm -f $(OBJslick); rm -f slick90run
+clean: ;rm -f $(OBJslick); rm -f slicktrack
