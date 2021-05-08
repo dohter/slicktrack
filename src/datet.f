@@ -42,9 +42,12 @@ C      WRITE(53,101) date_time(3),cmonth,date_time(1),
 C     &     date_time(5),date_time(6),date_time(7)
 
       WRITE(53,103)
+      WRITE(*, 103)
   103 FORMAT(/,/,/,/,/,'  ')
 
       WRITE(53,100) start_date_time(3),cmonth,start_date_time(1),
+     &     start_date_time(5),start_date_time(6),start_date_time(7)
+      WRITE(* ,100) start_date_time(3),cmonth,start_date_time(1),
      &     start_date_time(5),start_date_time(6),start_date_time(7)
 C
       IF(ICALL.EQ.1)THEN
@@ -61,6 +64,8 @@ C
       RUNTIME = RUNTIME/3600.D0
 
       WRITE(53,'(T47,A,T105,F10.2,A)')
+     +                        'Elapsed run time :',RUNTIME,' hours'
+      WRITE(* ,'(T47,A,T105,F10.2,A)')
      +                        'Elapsed run time :',RUNTIME,' hours'
       ENDIF
 
