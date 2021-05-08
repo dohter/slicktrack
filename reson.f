@@ -1,0 +1,39 @@
+C   05/08/87 509051735  MEMBER NAME  RESON    (SEPT95.S)    FORTRAN
+      SUBROUTINE RESON(E0,Q1,Q2,Q3,Q4)
+C
+C
+C=====ROUTINE TO IDENTIFY RESONANCES.
+C=====CHECK UP TO 10TH  ORDER RESONANCES.
+C
+C
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+C     WRITE(53,101)
+C 101 FORMAT('0','                              N1    N2    N3    INT')
+C
+C
+      LIM=3
+      KIM=2
+      DO 1 J=1,LIM
+      JJ=J-KIM
+      DO 1 K=1,LIM
+      KK=K-KIM
+      DO 1 L=1,LIM
+      LL=L-KIM
+      IF(IABS(JJ)+IABS(KK)+IABS(LL).GT.LIM/2)GO TO 1
+      IF(IABS(JJ)+IABS(KK)+IABS(LL).EQ.0    )GO TO 1
+      DO 2 M=1,LIM
+      MM=M-KIM
+C
+      RESTUN=JJ*Q1+KK*Q2+LL*Q3+MM-Q4
+      IF(DABS(RESTUN).GT.0.02)GO TO 2
+      WRITE(53,100)E0,RESTUN,JJ,KK,LL,MM
+  100 FORMAT(' ','RESON ',F8.3,' GEV  ',F6.3,4I6)
+C
+    2 CONTINUE
+    1 CONTINUE
+C
+      WRITE(53,102)
+  102 FORMAT(' ',//)
+      RETURN
+      END

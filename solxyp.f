@@ -1,0 +1,12 @@
+C   15/11/79 309261523  MEMBER NAME  SOLXYP   (S)           FORTRAN
+       SUBROUTINE SOLXYP(II,XK,DXPA,DYPA)
+C
+C
+       IMPLICIT REAL*8(A-H,O-Z)
+       INCLUDE "cloorb.for"
+C
+C
+       DXPA=.5*(DXP(II)+DXP(II+1))+.25*XK*(DY(II)+DY(II+1))
+       DYPA=.5*(DYP(II)+DYP(II+1))-.25*XK*(DX(II)+DX(II+1))
+       RETURN
+       END

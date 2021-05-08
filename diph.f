@@ -1,0 +1,74 @@
+C   06/05/84 311111408  MEMBER NAME  DIPH     (MAY92.S)     FORTRAN
+      SUBROUTINE DIPH(X,YY,T)
+C
+C
+C
+C=====ROUTINE TO SET UP AN 7X7 THICK HORIZONTAL DIPOLE MATRIX
+C
+C
+C
+      IMPLICIT REAL*8(A-H,O-Z)
+      REAL*8 T(7,7)
+      DATA ICALL/0/,GAP/0.05D0/
+C
+C
+C
+C
+C     ICALL=ICALL+1
+C     IF(ICALL.GT.0)WRITE(53,100)GAP
+C 100 FORMAT(' ','DIPOLE GAP SIZE (CM):',F7.2)
+C
+      XX=X/YY
+C=====INITIALISE MATRICES
+      T(1,2)=YY
+      T(3,4)=YY
+      IF(XX.EQ.0.D0)RETURN
+C
+C
+C
+C=====CONSTRUCT A THICK HORIZONTAL DIPOLE: XX IS THE CURVATURE.
+      ANG=X
+      C=DCOS(ANG)
+      S=DSIN(ANG)
+      T(1,1)=C
+      T(1,2)=S/XX
+      T(2,1)=-XX*S
+      T(2,2)=C
+      T(1,6)=(1.D0-C)/XX
+      T(2,6)=S
+      T(5,1)=-S
+      T(5,2)=-(1.D0-C)/XX
+      T(5,6)=-(YY-S/XX)
+C     DO 35 I=1,6
+C  35 WRITE(6,91)(T(I,J),J=1,6)
+C  91 FORMAT(6F12.5)
+C
+C=====END FIELDS: AS IN SPINOR.
+C=====FOR CONVENIENCE WE MULTIPLY THE END FIELDS ONTO EACH SLICE
+C
+C
+C     H=XX
+C     ARC=YY
+C     B1=0.5D0*ANG
+C     SINI=DSIN(B1)
+C     COSI=DCOS(B1)
+C     T1=SINI/COSI
+C     PSI=(1.+SINI**2)*GAP*H/COSI
+C     T2=DSIN(B1-PSI)/DCOS(B1-PSI)
+C     SMAT21= T1*H
+C     SMAT43=-T2*H
+C     T(1,1)=T(1,1)+T(1,2)*SMAT21
+C     T(2,1)=T(2,1)+T(2,2)*SMAT21
+C     T(5,1)=T(5,1)+T(5,2)*SMAT21
+C     T(3,3)=T(3,3)+T(3,4)*SMAT43
+C     T(4,3)=T(4,3)+T(4,4)*SMAT43
+C
+C     T(2,1)=T(2,1)+T(1,1)*SMAT21
+C     T(2,2)=T(2,2)+T(1,2)*SMAT21
+C     T(2,6)=T(2,6)+T(1,6)*SMAT21
+C     T(4,3)=T(4,3)+T(3,3)*SMAT43
+C     T(4,4)=T(4,4)+T(3,4)*SMAT43
+C
+C
+      RETURN
+      END

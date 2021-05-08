@@ -1,0 +1,42 @@
+C   30/08/83 509051808  MEMBER NAME  SYMP8    (SEPT95.S)    FORTRAN
+      SUBROUTINE SYMP8(T8)
+C
+C
+C=====ROUTINE TO TEST WHETHER A 6X6 TRANSFER MATRIX IS SYMPLECTIC.
+C=====BY COMPUTING T(TRANS) * S * T=?S
+
+      IMPLICIT REAL*8(A-H,O-Z)
+      DIMENSION T8(8,8),T6(6,6),TT6(6,6),S(6,6),SOUT(6,6),TEMP(6,6)
+      DATA S/36*0.D0/
+C=====COMPLETE DEFINITION OF SYMPLECTIC UNIT MATRIX: S
+      S(1,2)=-1.D0
+      S(2,1)= 1.D0
+      S(3,4)=-1.D0
+      S(4,3)= 1.D0
+      S(5,6)=-1.D0
+      S(6,5)= 1.D0
+C
+      DO 20 I=1,6
+      DO 20 J=1,6
+   20 T6(I,J)=T8(I,J)
+C
+C
+C=====COMPUTE THE PRODUCTS
+      CALL JAM666(TEMP,S,T6)
+      DO 1 I=1,6
+      DO 1 J=1,6
+    1 TT6(J,I)=T6(I,J)
+      CALL JAM666(SOUT,TT6,TEMP)
+      DO 2 I=1,6
+      DO 2 J=1,6
+    2 SOUT(I,J)=SOUT(I,J)-S(I,J)
+C
+C
+      WRITE(53,10)
+   10 FORMAT(' ',//,' SYMPLECTICITY TEST:  T(TRANS) * S * T - S')
+      WRITE(53,11)((SOUT(I,J),J=1,6),I=1,6)
+   11 FORMAT(' ',1X,6D12.2)
+C
+C
+      RETURN
+      END

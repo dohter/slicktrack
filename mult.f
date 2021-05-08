@@ -1,0 +1,27 @@
+C   01/06/76 303151337  MEMBER NAME  MULT     (S)           FORTRAN
+      SUBROUTINE MULT(AUS,EIN1,EIN2,ID,JD,KD)
+C=====AUS=EIN1*EIN2
+      INTEGER ID,JD,KD
+      REAL*8 AUS(ID,KD),EIN1(ID,JD),EIN2(JD,KD)
+      REAL*8 S(25,25)
+      IF(ID .GT. 25) GOTO 99
+      IF(JD .GT. 25) GOTO 99
+      IF(KD .GT. 25) GOTO 99
+C
+C     MATRIZENMULTIPLIKATION
+C
+      DO  1   I=1,ID
+      DO  1   K=1,KD
+      S(I,K)=0.
+      DO  1   J=1,JD
+    1 S(I,K)=S(I,K)+EIN1(I,J)*EIN2(J,K)
+      DO  2   I=1,ID
+      DO  2   K=1,KD
+    2 AUS(I,K)=S(I,K)
+      RETURN
+C
+C
+   99 WRITE(6,100)
+  100 FORMAT(' MULT KANN NUR BIS RANG 5 ARBEITEN')
+      STOP
+      END

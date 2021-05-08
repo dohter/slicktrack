@@ -1,0 +1,53 @@
+C   05/12/85 610071536  MEMBER NAME  DEQUAD   (S)           FORTRAN
+      SUBROUTINE DEQUAD(ANAME,KPS,IKICK)
+C
+C=====ROUTINE TO CONVERT THE NUMERALS IN A & B INTO A DECIMAL NUMBER
+C=====AND COMPASS POINT N/S/O/W INTO 1/2/3/4
+C
+      IMPLICIT REAL*8 (A-H,O-Z)
+      DIMENSION KPS(2)
+      LOGICAL*1 A,B,NUM(10),COMPAS(4),ANAME(8)
+      DATA NUM/'0','1','2','3','4','5','6','7','8','9'/
+      DATA COMPAS/'N','S','O','W'/
+C
+#include "cnlist.for"
+C
+C
+C
+      DO 1 J=1,10
+      IF(NUM(J).NE.ANAME(4))GO TO 1
+      LU=J-1
+      GO TO 2
+    1 CONTINUE
+      GO TO 10
+C
+C
+    2 LV=1000
+      DO 11 J=1,10
+      IF(NUM(J).NE.ANAME(3))GO TO 11
+      LU=(J-1)*10+LU
+      GO TO 3
+   11 CONTINUE
+      GO TO 10
+C
+C
+    3 KPS(1)=LU
+C
+C
+      DO 12 J=1,4
+      IF(COMPAS(J).NE.ANAME(5))GO TO 12
+      LU=J
+      GO TO 4
+   12 CONTINUE
+      GO TO 10
+C
+    4 KPS(2)=LU
+C
+C
+      RETURN
+C
+   10 WRITE(6,20)ANAME(3),ANAME(4),ANAME(5)
+   20 FORMAT('0','CANNOT DECODE CIRCUIT NUMBERS:',3A1,' SO STOP')
+      IF(IKICK.NE.6)RETURN
+      STOP
+      END

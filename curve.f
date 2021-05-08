@@ -1,0 +1,25 @@
+C   17/12/82 212171809  MEMBER NAME  CURVE    (S)           FORTRAN
+C
+C
+      DIMENSION X(100),Y(100)
+C
+C
+      COMMON//HMEMOR(20000)
+C
+C
+C     EXTERNAL FUN
+C     CALL HBFUN1(1,' TEST $,100,0.,1.,FUN)
+C     CALL HPAK(2,X)
+C     CALL HBOOK1(2,' TEST $,100,0.,1.)
+      CALL HBOOK1(1,'TEST FUNCTION$',100,1.,100.)
+      DO 10 J=1,99
+      Y(J)=(SIN(J*0.2)+2.)*100.
+   10 CALL HFILL(1,J*1.,1.,Y(J))
+      CALL HSTORE(0,14)
+      CALL HISTDO
+      STOP
+      END
+C     FUNCTION FUN(X)
+C     FUN=SIN(X)
+C     RETURN
+C     END

@@ -1,0 +1,42 @@
+C   27/11/82            MEMBER NAME  HGIPS1   (S)           FORTRAN
+C   21/05/81            MEMBER NAME  HGIPS    (GREGOR)      FORTRAN
+      SUBROUTINE HGIPS(IDH,IERR)
+C - - - - - - - - - - - - - - - - - - -- - - - - - - - - - - - - -
+C     STORE HISTOGRAM  FOR IPS PLOT
+C     IDH     IDENTIFIER
+C     IERR=0  SQRT(CONT)
+C     IERR=1  STORED ERROR AFTER CALL HBARX
+C- - - - - - - - - - - - - - -- - - - - - - - - - -- - - - - - - - --
+      COMMON//A(30000)
+      LOGICAL * 1 KTIT(4)/1H ,1H(,1H),1H$/
+      COMMON/CTITL/LTIT,TITL(400)
+      LOGICAL * 1 TITL
+      REAL CONT(10000),ERR(10000)
+      DIMENSION ICHOIC(3)
+      DATA ICHOIC/'HIST','PROX','PROY'/
+      CALL HGCHTI(IDH,NCHAX,XLOW,DCHAX,XUP,NCHAY,YLOW,DCHAY,YUP)
+      NCHAN=NCHAX
+      IF(NCHAY.GT.0) NCHAN=NCHAX*NCHAY
+      CALL HUNPAK(IDH,CONT,ICHOIC(1))
+      IF(IERR.EQ.0) GOTO 110
+      IF(NCHAY.NE.0) GOTO 110
+      DO 11 K=1,NCHAN
+      ERR(K)=HIE(IDH,K)
+   11 CONTINUE
+      GOTO 10
+  110 CONTINUE
+      DO 12 K=1,NCHAN
+      ERR(K)=SQRT(CONT(K))
+   12 CONTINUE
+   10 CONTINUE
+C
+C -----------------  TITLE
+      TITL(LTIT)=KTIT(4)
+C     WRITE(6,1255) LTIT,(TITL(L),L=1,LTIT)
+ 1255 FORMAT(1X,' **1*LTIT,TIT ',I5,3X,20A4)
+C
+      WRITE(15) IDH,NCHAX,XLOW,XUP,NCHAY,YLOW,YUP,
+     +LTIT,(TITL(I),I=1,LTIT),
+     +NCHAN,(CONT(N),N=1,NCHAN),(ERR(N),N=1,NCHAN)
+      RETURN
+      END

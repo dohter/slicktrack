@@ -1,0 +1,92 @@
+C   06/10/83 206021812  MEMBER NAME  RTGEOM   (MAY92.S)     FORTRAN
+      SUBROUTINE RTGEOM(E0,IE0)
+C
+C
+C===========ROTATOR GEOMETRY AT EACH ENERGY.============================
+C
+C
+      IMPLICIT REAL*8(A-H,O-Z)
+C
+      DIMENSION X(1000),Y(1000),Z(1000),ANGX(1000),ANGZ(1000)
+      DIMENSION XXX(100,1000),YYY(100,1000),ZZZ(100,1000)
+
+C
+C
+#include "cnlist.for"
+#include "clatic.for"
+#include "csol.for"
+C
+C
+      PI=3.1415926535897932D0
+C
+C
+C
+C
+      X(1)=0.D0
+      Y(1)=0.D0
+      Z(1)=0.D0
+      ANGX(1)=0.D0
+      ANGZ(1)=0.D0
+C
+      DO 42 II=2,NELEM
+      JTY=ITYPE(II)
+      JID=ID(JTY)
+      GO TO(134,135,134,134,134,136,136,136,139,134,134,134,134,134,
+     +                                                      134,134),JID
+C=====CALCULATE BEND ANGLES AND ORBIT POSITIONS AT END OF EACH ELEMENT.
+  134 CONTINUE
+      ANGX(II)=ANGX(II-1)
+      ANGZ(II)=ANGZ(II-1)
+      X(II)=X(II-1)+YY(JTY)*DSIN(ANGX(II-1))
+      Y(II)=Y(II-1)+YY(JTY)*DCOS(ANGX(II-1))
+      Z(II)=Z(II-1)+YY(JTY)*DSIN(ANGZ(II-1))
+      GO TO 138
+  135 CONTINUE
+      ANGX2=XX(JTY)
+      III=ITYPE(II)
+      RAD=YY(JTY)/ANGX2
+C     WRITE(6,97)II,ID(JTY),NAME(JTY),XX(JTY),X2(JTY),
+C    +                                    YY(JTY),NUNT(JTY),TWIST(JTY)
+   97 FORMAT(' ',2I5,1X,A8,3F12.8,I5,2X,F11.6,4X,A8,I4,I10)
+      X(II)=X(II-1)+RAD*DCOS(ANGX(II-1))-RAD*DCOS(ANGX(II-1)+ANGX2)
+      Y(II)=Y(II-1)-RAD*DSIN(ANGX(II-1))+RAD*DSIN(ANGX(II-1)+ANGX2)
+      Z(II)=Z(II-1)+YY(JTY)*DSIN(ANGZ(II-1))
+      ANGX(II)=ANGX(II-1)+ANGX2
+      ANGZ(II)=ANGZ(II-1)
+      GO TO 138
+  139 CONTINUE
+      ANGZ2=XX(JTY)
+      III=ITYPE(II)
+      RAD=YY(JTY)/ANGZ2
+      Z(II)=Z(II-1)+RAD*DCOS(ANGZ(II-1))-RAD*DCOS(ANGZ(II-1)+ANGZ2)
+      Y(II)=Y(II-1)-RAD*DSIN(ANGZ(II-1))+RAD*DSIN(ANGZ(II-1)+ANGZ2)
+      X(II)=X(II-1)+YY(JTY)*DSIN(ANGX(II-1))
+      ANGZ(II)=ANGZ(II-1)+ANGZ2
+      ANGX(II)=ANGX(II-1)
+      GO TO 138
+  136 CONTINUE
+      ANGX(II)=ANGX(II-1)
+      ANGZ(II)=ANGZ(II-1)
+      X(II)=X(II-1)
+      Y(II)=Y(II-1)
+      Z(II)=Z(II-1)
+  138 CONTINUE
+C
+      XXX(IE0,II)=X(II)
+      YYY(IE0,II)=Y(II)
+      ZZZ(IE0,II)=Z(II)
+
+
+      WRITE(20)E0,IE0,XXX(IE0,II),ZZZ(IE0,II),YYY(IE0,II)
+      WRITE(6,100)E0,IE0,XXX(IE0,II),ZZZ(IE0,II),YYY(IE0,II),ANGX(II),
+     +                                                       ANGZ(II)
+  100 FORMAT(' ',F17.5,I10,3F17.5,2F20.8)
+
+C
+   42 CONTINUE
+C
+C
+C
+C
+      RETURN
+      END

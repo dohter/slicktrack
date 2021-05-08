@@ -1,0 +1,74 @@
+C   15/01/80 101191541  MEMBER NAME  EIV3     (JJS)         FORTRAN
+      SUBROUTINE EIV3(A,EVECTR,EVECTI,LAMR,LAMI,IERRO)
+      IMPLICIT REAL*8(A-B,D-H,O-Z),COMPLEX*16(C)
+      REAL*8  LAMR,LAMI
+      DIMENSION CLAM(3),CN(3)
+      DIMENSION CB(3,3,3)
+      DIMENSION CV(3)
+      DIMENSION A(3,3),LAMR(3),
+     *          LAMI(3),R(3),CA(3,3,3),CD(3,3),
+     *          CX(3,3),CNX(3,3),RCNX(2,3,3),EVECTR(3,3),EVECTI(3,3)
+      EQUIVALENCE (RCNX(1,1,1),CNX(1,1))
+C
+C
+      IERRO=0
+C
+C
+C
+C     BERECHNUNG DER EIGENWERTE
+      SPA=A(1,1)+A(2,2)+A(3,3)
+      U1=0.5D0*(SPA-1.D0)
+      U2=DSQRT(1.D0-U1*U1)
+      LAMR(1)=1.D0
+      LAMI(1)=0.D0
+      LAMR(2)=U1
+      LAMI(2)=U2
+      LAMR(3)=U1
+      LAMI(3)=-U2
+      DO 20 I=1,3
+   20 CLAM(I)=DCMPLX(LAMR(I),LAMI(I))
+C
+C
+C     BERECHNUNG DER EIGENVEKTOREN
+C
+      DO 21 N=1,3
+      DO 22 I=1,3
+      DO 23 K=1,3
+   23 CA(K,I,N)=A(K,I)
+   22 CONTINUE
+   21 CONTINUE
+      DO 24 N=1,3
+      DO 25 I=1,3
+   25 CA(I,I,N) = CA(I,I,N) - CLAM(N)
+   24 CONTINUE
+C
+      CV(1)=1.D0
+      CV(2)=-0.5D0
+      CV(3)=0.25D0
+      CALL DCGMPR(CA(1,1,2),CA(1,1,3),CB(1,1,1),3,3,3)
+      CALL DCGMPR(CA(1,1,3),CA(1,1,1),CB(1,1,2),3,3,3)
+      CALL DCGMPR(CA(1,1,1),CA(1,1,2),CB(1,1,3),3,3,3)
+      CALL DCGMPR(CB(1,1,1),CV,CX(1,1),3,3,1)
+      CALL DCGMPR(CB(1,1,2),CV,CX(1,2),3,3,1)
+      CALL DCGMPR(CB(1,1,3),CV,CX(1,3),3,3,1)
+C
+      DO 13 I=1,3
+      R(I)=0.D0
+      DO 14 K=1,3
+   14 R(I)=R(I)+CX(K,I)*DCONJG(CX(K,I))
+      R(I)=DSQRT(R(I))
+      DO 16 K=1,3
+   16 CNX(K,I)=CX(K,I)/R(I)
+   13 CONTINUE
+C
+      DO 73 I=1,3
+      DO 73 J=1,3
+      EVECTR(I,J)=RCNX(1,I,J)
+      EVECTI(I,J)=RCNX(2,I,J)
+      IF(DABS(EVECTR(I,J)).LT. 1.D-13) EVECTR(I,J)=0.D0
+      IF(DABS(EVECTI(I,J)).LT. 1.D-13) EVECTI(I,J)=0.D0
+   73 CONTINUE
+C
+C
+      RETURN
+      END
