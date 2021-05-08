@@ -18,11 +18,13 @@ C
 C
 C      PARAMETER (NM = 620, NC= 620)         !Number of measurements and correcters
       PARAMETER (NM = 2000, NC= 2000)
+      PARAMETER (LWORK = NM)
       DIMENSION TREV(7,7),TEMP(7,7),TM7(7,7),VC6A(6),VC6B(6),TM6(6,6)
 C======Storage for the least squares NAG routine.
       DIMENSION A(2*NM,NC),AUSE(2*NM,NC),C(NC,1),BMEAS(2*NM,1),
-     +        QR(2*NM,NC), ALPHA(NC),BREAL(2*NM,1),BTEMP(2*NM,1),
-     +        E(NC),Y(NC),Z(NC),R(2*NM),IPIV(NC),RESID(2*NM),AA(NM,NM)
+     +        QR(2*NM,NC), ALPHA(NC),BREAL(2*NM,1),
+     +        E(NC),Y(NC),Z(NC),R(3*NM),IPIV(NC),RESID(2*NM),AA(NM,NM),
+     +        WORK(LWORK),BTEMP(2*NM,1)
 
       DIMENSION   NVCPOS(NC)
       CHARACTER*8 NVNAME(NC)
