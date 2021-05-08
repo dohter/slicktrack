@@ -1,2 +1,4 @@
-Here is readme
-
+To make type "make"
+To run example:
+  cd examples
+  ../slicktrack < ZDRD.in

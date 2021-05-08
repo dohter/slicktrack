@@ -1,71 +1,28 @@
 #
 # Makefile for SLICKTRACK
 #
-#To get optimization so that Not-a-Number etc doesn't cause a crash.
-#FFLAGS= -xtarget=native -O5 -libmil -fsimple=2 -dalign -xlibmopt -depend -fns -ftrap=common -pad=local -xvector=yes -xprefetch=yes -xprefetch_level=2
-#FFLAGS= -O3 -libmil -fsimple=1 -dalign -xlibmopt -depend -ftrap=common -xvector=no -xprefetch=no
-#No optimization so that Not-a-Number etc does cause a crash.
-#FFLAGS= -g -C
-#FFLAGS= -g -C +T
-#-L for listing
-#
+
+FF=gfortran
 FFLAGS= -O3
-#FFLAGS= -O3  -m32
-#FFLAGS= -O3 -m32
-# -ftrace=full
-#
-#
-# libraries needed# need option lF77 to link the F77 naglib with an F90 prgm#
-#  SNAG = -lnag  -lF77 #
-#  SNAG = -lnag  -L. -lF77
-#  SNAG = -L/opt/products/naglib/20 -lnag -L/opt/products/gcc/3.3.3/lib -lg2c
-#   PNAG = -L/afs/desy.de/i586_rhel40/products/naglib/20/ -lnag
-#   RHLX = -L/usr/lib/gcc/x86_64-redhat-linux/3.4.6/32 -lg2c -m32
-#   PNAG = /opt/NAG/fll3a22dfl/lib/libnag_nag.a
-#    PNAG = /Users/fanglei/NAG/flmi622dcl/lib/libnag_nag.a
-    PNAG = /Users/fanglei/NAG/flmi6261fl/lib/libnag_nag.a
-#
-# sources of SLICK_F90.MAY97
-#
-SRCslick=slick.f aver.f averv5sq.f avorb.f lbeambeam.f lbeambeam9.f cavity.f cfdiph.f cfdipv.f chrotn.f damint.f damper.f date.f  dcgmpr.f dertop.f diaver.f diph.f dipv.f dx66.f dx88.f  emitnc.f fixorb1.f fixorb2.f fixorb3.f fixorb4.f fixorb5.f hedge.f iparam.f jam333.f jam444.f jam666.f jam777.f jam888.f jam881.f jam999.f lattin.f linopt.f linopenopt.f mult.f mx66.f mx66damp.f mx88.f mx88damp.f mx99damp.f mxdamp.f nlbeambeam.f nlbeambeam9.f norm.f norm2.f orbit.f ortchk.f pertop.f psequil.f quartm.f renorm.f reson.f roquad.f rotatr.f rspin.f scrurita1.f scrurita2.f scrurita3.f scrurita4.f setbb.f sex88.f sexeq.f sig.f simq.f skewquad.f snake.f sol6.f sol66.f sol77.f sol8an.f sol9an.f solxyp.f spin.f ssect.f symp6.f symp8.f thiquad.f tspin.f unit.f unitm.f \
-f03aaf.f f02ebf.f \
-g05skf.f \
-g05sqf.f \
-g05kff.f \
-g05rzf.f \
-s15ddf.f \
-rnglib.f ranlib.f \
-string_trim.f90
+LFLAGS= -O3 -llapack
+TARGET=slicktrack
+OBJDIR=obj
+SRCDIR=src
 
-# object modules of SLICK_F90.MAY97
-#
-OBJslick=slick.o aver.o averv5sq.o avorb.o lbeambeam.o lbeambeam9.o cavity.o cfdiph.o cfdipv.o chrotn.o damint.o damper.o date.o  dcgmpr.o dertop.o diaver.o diph.o dipv.o dx66.o dx88.o  emitnc.o fixorb1.o fixorb2.o fixorb3.o fixorb4.o fixorb5.o hedge.o iparam.o jam333.o jam444.o jam666.o jam777.o jam888.o jam881.o jam999.o lattin.o linopt.o linopenopt.o mult.o mx66.o mx66damp.o mx88.o mx88damp.o mx99damp.o mxdamp.o nlbeambeam.o nlbeambeam9.o norm.o norm2.o orbit.o ortchk.o pertop.o psequil.o quartm.o renorm.o reson.o roquad.o rotatr.o rspin.o scrurita1.o scrurita2.o scrurita3.o scrurita4.o setbb.o sex88.o sexeq.o sig.o simq.o skewquad.o snake.o sol6.o sol66.o sol77.o sol8an.o sol9an.o solxyp.o spin.o ssect.o symp6.o symp8.o thiquad.o tspin.o unit.o unitm.o \
-f02ebf.o \
-g05kff.o \
-g05skf.o \
-g05sqf.o \
-s15ddf.o \
-f03aaf.o \
-g05rzf.o \
-rnglib.o ranlib.o \
-string_trim.o
+SOURCES=$(SRCDIR)/slick.f $(SRCDIR)/aver.f $(SRCDIR)/averv5sq.f $(SRCDIR)/avorb.f $(SRCDIR)/lbeambeam.f $(SRCDIR)/lbeambeam9.f $(SRCDIR)/cavity.f $(SRCDIR)/cfdiph.f $(SRCDIR)/cfdipv.f $(SRCDIR)/chrotn.f $(SRCDIR)/damint.f $(SRCDIR)/damper.f $(SRCDIR)/date.f $(SRCDIR)/dcgmpr.f $(SRCDIR)/dertop.f $(SRCDIR)/diaver.f $(SRCDIR)/diph.f $(SRCDIR)/dipv.f $(SRCDIR)/dx66.f $(SRCDIR)/dx88.f $(SRCDIR)/emitnc.f $(SRCDIR)/fixorb1.f $(SRCDIR)/fixorb2.f $(SRCDIR)/fixorb3.f $(SRCDIR)/fixorb4.f $(SRCDIR)/fixorb5.f $(SRCDIR)/hedge.f $(SRCDIR)/iparam.f $(SRCDIR)/jam333.f $(SRCDIR)/jam444.f $(SRCDIR)/jam666.f $(SRCDIR)/jam777.f $(SRCDIR)/jam888.f $(SRCDIR)/jam881.f $(SRCDIR)/jam999.f $(SRCDIR)/lattin.f $(SRCDIR)/linopt.f $(SRCDIR)/linopenopt.f $(SRCDIR)/mult.f $(SRCDIR)/mx66.f $(SRCDIR)/mx66damp.f $(SRCDIR)/mx88.f $(SRCDIR)/mx88damp.f $(SRCDIR)/mx99damp.f $(SRCDIR)/mxdamp.f $(SRCDIR)/nlbeambeam.f $(SRCDIR)/nlbeambeam9.f $(SRCDIR)/norm.f $(SRCDIR)/norm2.f $(SRCDIR)/orbit.f $(SRCDIR)/ortchk.f $(SRCDIR)/pertop.f $(SRCDIR)/psequil.f $(SRCDIR)/quartm.f $(SRCDIR)/renorm.f $(SRCDIR)/reson.f $(SRCDIR)/roquad.f $(SRCDIR)/rotatr.f $(SRCDIR)/rspin.f $(SRCDIR)/scrurita1.f $(SRCDIR)/scrurita2.f $(SRCDIR)/scrurita3.f $(SRCDIR)/scrurita4.f $(SRCDIR)/setbb.f $(SRCDIR)/sex88.f $(SRCDIR)/sexeq.f $(SRCDIR)/sig.f $(SRCDIR)/simq.f $(SRCDIR)/skewquad.f $(SRCDIR)/snake.f $(SRCDIR)/sol6.f $(SRCDIR)/sol66.f $(SRCDIR)/sol77.f $(SRCDIR)/sol8an.f $(SRCDIR)/sol9an.f $(SRCDIR)/solxyp.f $(SRCDIR)/spin.f $(SRCDIR)/ssect.f $(SRCDIR)/symp6.f $(SRCDIR)/symp8.f $(SRCDIR)/thiquad.f $(SRCDIR)/tspin.f $(SRCDIR)/unit.f $(SRCDIR)/unitm.f $(SRCDIR)/f03aaf.f $(SRCDIR)/f02ebf.f $(SRCDIR)/g05skf.f $(SRCDIR)/g05sqf.f $(SRCDIR)/g05kff.f $(SRCDIR)/g05rzf.f $(SRCDIR)/s15ddf.f $(SRCDIR)/rnglib.f $(SRCDIR)/ranlib.f $(SRCDIR)/string_trim.f90
+OBJECTS=$(OBJDIR)/slick.o $(OBJDIR)/aver.o $(OBJDIR)/averv5sq.o $(OBJDIR)/avorb.o $(OBJDIR)/lbeambeam.o $(OBJDIR)/lbeambeam9.o $(OBJDIR)/cavity.o $(OBJDIR)/cfdiph.o $(OBJDIR)/cfdipv.o $(OBJDIR)/chrotn.o $(OBJDIR)/damint.o $(OBJDIR)/damper.o $(OBJDIR)/date.o $(OBJDIR)/dcgmpr.o $(OBJDIR)/dertop.o $(OBJDIR)/diaver.o $(OBJDIR)/diph.o $(OBJDIR)/dipv.o $(OBJDIR)/dx66.o $(OBJDIR)/dx88.o $(OBJDIR)/emitnc.o $(OBJDIR)/fixorb1.o $(OBJDIR)/fixorb2.o $(OBJDIR)/fixorb3.o $(OBJDIR)/fixorb4.o $(OBJDIR)/fixorb5.o $(OBJDIR)/hedge.o $(OBJDIR)/iparam.o $(OBJDIR)/jam333.o $(OBJDIR)/jam444.o $(OBJDIR)/jam666.o $(OBJDIR)/jam777.o $(OBJDIR)/jam888.o $(OBJDIR)/jam881.o $(OBJDIR)/jam999.o $(OBJDIR)/lattin.o $(OBJDIR)/linopt.o $(OBJDIR)/linopenopt.o $(OBJDIR)/mult.o $(OBJDIR)/mx66.o $(OBJDIR)/mx66damp.o $(OBJDIR)/mx88.o $(OBJDIR)/mx88damp.o $(OBJDIR)/mx99damp.o $(OBJDIR)/mxdamp.o $(OBJDIR)/nlbeambeam.o $(OBJDIR)/nlbeambeam9.o $(OBJDIR)/norm.o $(OBJDIR)/norm2.o $(OBJDIR)/orbit.o $(OBJDIR)/ortchk.o $(OBJDIR)/pertop.o $(OBJDIR)/psequil.o $(OBJDIR)/quartm.o $(OBJDIR)/renorm.o $(OBJDIR)/reson.o $(OBJDIR)/roquad.o $(OBJDIR)/rotatr.o $(OBJDIR)/rspin.o $(OBJDIR)/scrurita1.o $(OBJDIR)/scrurita2.o $(OBJDIR)/scrurita3.o $(OBJDIR)/scrurita4.o $(OBJDIR)/setbb.o $(OBJDIR)/sex88.o $(OBJDIR)/sexeq.o $(OBJDIR)/sig.o $(OBJDIR)/simq.o $(OBJDIR)/skewquad.o $(OBJDIR)/snake.o $(OBJDIR)/sol6.o $(OBJDIR)/sol66.o $(OBJDIR)/sol77.o $(OBJDIR)/sol8an.o $(OBJDIR)/sol9an.o $(OBJDIR)/solxyp.o $(OBJDIR)/spin.o $(OBJDIR)/ssect.o $(OBJDIR)/symp6.o $(OBJDIR)/symp8.o $(OBJDIR)/thiquad.o $(OBJDIR)/tspin.o $(OBJDIR)/unit.o $(OBJDIR)/unitm.o $(OBJDIR)/f03aaf.o $(OBJDIR)/f02ebf.o $(OBJDIR)/g05skf.o $(OBJDIR)/g05sqf.o $(OBJDIR)/g05kff.o $(OBJDIR)/g05rzf.o $(OBJDIR)/s15ddf.o $(OBJDIR)/rnglib.o $(OBJDIR)/ranlib.o $(OBJDIR)/string_trim.o
 
-%.o: %.f
-#       gfortran also works here
-#	gfortran -c $(FFLAGS) $<
-#	f95 -c $(FFLAGS) $<
-	gfortran -c $(FFLAGS) $<
+$(TARGET): $(OBJECTS)
+	$(FF) -o $@ $(OBJECTS) $(LFLAGS)
+	@echo "Linking complete!"
 
-%.o: %.f90
-	gfortran -c $(FFLAGS) $<
+$(OBJDIR)/%.o : $(SRCDIR)/%.f
+	$(FF) $(FFLAGS) -c $< -o $@
+	@echo "Compiled "$<" successfully!"
 
-slick:  $(OBJslick)
-#	f95  -o  slick90run $(FFLAGS) $(OBJslick) $(PNAG) $(RHLX)
-#       gfortran also works here
-#	gfortran  -o  slick90run $(FFLAGS) $(OBJslick) $(PNAG)
-#       gfortran  -o  slick90run $(FFLAGS) $(OBJslick) $(PNAG) -framework IOKit -framework CoreFoundation -lc++
-#       gfortran  -o  slick90run $(FFLAGS) $(OBJslick) $(PNAG) -framework IOKit -framework CoreFoundation
-#	f95  -o  slick90run $(FFLAGS) $(OBJslick) $(PNAG)
-	gfortran  -o  slicktrack $(FFLAGS) $(OBJslick) -llapack
+$(OBJDIR)/%.o : $(SRCDIR)/%.f90
+	$(FF) $(FFLAGS) -c $< -o $@
+	@echo "Compiled "$<" successfully!"
 
-clean: ;rm -f $(OBJslick); rm -f slicktrack
+.PHONY: clean
+clean: ;rm -f $(OBJECTS) $(OBJECTS90); rm -f $(TARGET)
