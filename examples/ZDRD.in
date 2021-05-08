@@ -18,7 +18,7 @@
 *       FFT          => FAST FOURIER TRANSFORM OF ORBITAL MOTION             *
 ******************************************************************************
 
- &FILES ROTATOR     ='slick_rotator.inp',
+ &FILES ROTATOR     ='../slick_rotator.inp',
         RING        ='ZDR20.slick',
         OUTPUT      ='ZDR20.slick.out',
         POLARI      ='slick_ZDR20_2.0_pol_sept2011.out',

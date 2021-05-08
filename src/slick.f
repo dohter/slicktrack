@@ -1,8 +1,8 @@
 C   19/05/82 603081607  MEMBER NAME  SLICK    (SEPT95.S)    FORTRAN
 C
-C 
-       PROGRAM SLICK  
- 
+C
+       PROGRAM SLICK
+
 C
 C
 C                 MAIN ROUTINE FOR RUNNING SLICKTRACK
@@ -10,7 +10,7 @@ C                 -----------------------------------
 C
 C  **************************************************************************************
 C  *                                                                                    *
-C  *      The history of SLICKTRACK, a request to the user, and a disclaimer.           *     
+C  *      The history of SLICKTRACK, a request to the user, and a disclaimer.           *
 C  *      ------------------------------------------------------------------            *
 C  *                                                                                    *
 C  *                                                                                    *
@@ -54,20 +54,20 @@ C  *                                                                            
 C  *    The Monte-Carlo algorithms are purely classical and in the spirit of the        *
 C  *    stochastic analysis of H. Mais and G. Ripken, as for example                    *
 C  *    in DESY Report 83-62 (1983) and subsequent papers by these                      *
-C  *    with D.P. Barber and K. Heinemann.                                              *  
+C  *    with D.P. Barber and K. Heinemann.                                              *
 C  *                                                                                    *
 C  *    At the time of writing this introduction (April 2009), the orbital              *
 C  *    motion in the Monte-Carlo simulations is linearised but the                     *
 C  *    spin-orbit tracking can be undertaken either with linearised                    *
-C  *    spin motion (within the spirit of the above mentioned stochastic                * 
+C  *    spin motion (within the spirit of the above mentioned stochastic                *
 C  *    analysis), or with full 3-D spin motion to be described in                      *
 C  *    DESY Report 09-15 in preparation. It is the full 3-D algorithm that             *
 C  *    delivers the the higher order spin-orbit resonances.                            *
-C  *                                                                                    *   
-C  *    The Monte-Carlo tracking algorithms can include kicks to the electrons          *  
-C  *    from an oncoming bunch. It is assumed that the oncoming bunch is                *  
+C  *                                                                                    *
+C  *    The Monte-Carlo tracking algorithms can include kicks to the electrons          *
+C  *    from an oncoming bunch. It is assumed that the oncoming bunch is                *
 C  *    unaffected by the collisions but the beam-beam forces can be handled in         *
-C  *    various approximations including the full non-linear force on an electron       * 
+C  *    various approximations including the full non-linear force on an electron       *
 C  *    from oncoming bunches of elliptical cross section.                              *
 C  *                                                                                    *
 C  *    It is hoped that in the future, non-linear orbital motion in the lattice        *
@@ -84,33 +84,33 @@ C  *    has entailed much work and deep knowledge of the subject.               
 C  *                                                                                    *
 C  *    D.P. Barber therefore requests that presentations and published work            *
 C  *    based on this code acknowledge the authorship and mention the name SLICKTRACK.  *
-C  *                                                                                    *    
+C  *                                                                                    *
 C  *                                                                                    *
 C  *    D.P. Barber also requests to be informed of problems and bugs and requests that *
-C  *    these paragraphs of material on the history etc are not removed.                *                     
+C  *    these paragraphs of material on the history etc are not removed.                *
 C  *                                                                                    *
 C  *                                                                                    *
 C  *                                                                                    *
 C  *                                   Disclaimer                                       *
 C  *                                   ----------                                       *
 C  *                                                                                    *
-C  *    This code has been built and maintained by  D.P. Barber for doing  physics.     * 
+C  *    This code has been built and maintained by  D.P. Barber for doing  physics.     *
 C  *    There is no manual but there is some guidance in the ...flags.inp file and in   *
-C  *    this main program. The code has been kept as clean as possible in order to      *    
-C  *    minimise errors and to allow the physics to be easily followed. Beyond that,    * 
-C  *    no attempt has been made to make the code super elegant. Until now, people      * 
+C  *    this main program. The code has been kept as clean as possible in order to      *
+C  *    minimise errors and to allow the physics to be easily followed. Beyond that,    *
+C  *    no attempt has been made to make the code super elegant. Until now, people      *
 C  *    at DESY have been the only users.                                               *
 C  *                                                                                    *
 C  *    Neither D.P. Barber  nor DESY accepts any responsibilty for loss or damage,     *
 C  *    whether material, financial  or of any other kind resulting from the use of     *
-C  *    SLICKTRACK                                                                      *   
+C  *    SLICKTRACK                                                                      *
 C  *                                                                                    *
 C  *                                                                                    *
 C  **************************************************************************************
-C  
-C  
-C  
-C  
+C
+C
+C
+C
 C        'THICK SLICE' VERSION WITH EXACT MATRICES FOR THICK
 C         CONTIGUOUS SLICES SO THAT INTEGRALS CAN BE HANDLED.
 C
@@ -129,7 +129,7 @@ C   MEANS(DRF,BBX,QUA,SKEW-QUA,CAV,HOR-KICK,VER-KICK,SEXT,BBY,SOLENOID)
 C   ID=  (11         ,12           ,13           )
 C   MEANS(ROTAT.QUAD  FOC.HOR.BEND  FOC.VERT.BEND)
 C   ID=  (14        ,15          ,16            ,17)
-C   MEANS(ROTATOR  HOR.CF      VERT.CF      BEAM-BEAM)     
+C   MEANS(ROTATOR  HOR.CF      VERT.CF      BEAM-BEAM)
 C
 C
 C   (ID .EQ. 99) DEFINES HALF SUPERPERIOD IN THE UNPERTURBED MACHINE.
@@ -172,8 +172,8 @@ C
      +               ELLIPSE1,ELLIPSE2,BEAMDIST,SPINDIST,SPINDIFF,
      +               SPINELLIPSE1,SPINELLIPSE2,MCTDEP,ABRATIO,FFT,
      +               ISPINSPREAD
-                  
-C======Rotator      = Look-up table of setting for HERA rotators.                
+
+C======Rotator      = Look-up table of setting for HERA rotators.
 C======Ring         = Input file.
 C======Output       = Printout
 C======Polari       = Polarization (etc) vs. energy.
@@ -183,7 +183,7 @@ C======Ellipse1     = Beam ellipse from theoretical covariance matrix.
 C======Ellipse2     = Beam ellipse from covariance matrix of a tracked ensemble.
 C======Beamdist     = Distributions of a tracked ensemble.
 C======Spindist     = Distribution of the spin angles alpha and beta.
-C======Ispinspread  = Equilibrium distribution of the spin angles alpha and beta. 
+C======Ispinspread  = Equilibrium distribution of the spin angles alpha and beta.
 C======Spindiff     = Time dependence of the spread of the spin angles alpha and beta.
 C======
 C======MCtdep       = The depolarising times from the Monte-Carlo simulation.
@@ -206,25 +206,25 @@ C
       ROTATOR       = 'slick_rotator.inp'
       RING          = 'he7basml.inp'
       OUTPUT        = 'slick.out'
-      GMT           = 'slick.gmt' 
-      POLARI        = 'slick_pol.out'                                            
+      GMT           = 'slick.gmt'
+      POLARI        = 'slick_pol.out'
       AZIFUNCS      = 'slick_dndelta_funcs.out'
-      GAUSSES       = 'slick_gausses.out' 
+      GAUSSES       = 'slick_gausses.out'
       ELLIPSE1      = 'slick_ellipse1.out'
       ELLIPSE2      = 'slick_ellipse2.out'
       BEAMDIST      = 'slick_beamdist.out'
       SPINDIST      = 'slick_spindist.out'
       SPINDIFF      = 'slick_spindiff.out'
       MCTDEP        = 'slick_mctdep.out'
-      ABRATIO       = 'slick_abratio.out'   
+      ABRATIO       = 'slick_abratio.out'
       SPINELLIPSE1  = 'slick_spinellipse1.out'
       SPINELLIPSE2  = 'slick_spinellipse2.out'
       FFT           = 'slick_fft.out'
       ISPINSPREAD   = 'slick_ispinspread.out'
 
-      READ(5,FILES)                                                        
-      OPEN(51,FILE=ROTATOR,      STATUS='OLD')  
-      OPEN(52,FILE=RING,         STATUS='OLD') 
+      READ(5,FILES)
+      OPEN(51,FILE=ROTATOR,      STATUS='OLD')
+      OPEN(52,FILE=RING,         STATUS='OLD')
       OPEN(53,FILE=OUTPUT,       STATUS='UNKNOWN')
 
 C    *************** Fanglei comments some of the following open files on 20Dec12 ********
@@ -243,7 +243,7 @@ C      OPEN(62,FILE=SPINELLIPSE,  STATUS='UNKNOWN')
 C      OPEN(64,FILE=ABRATIO,      STATUS='UNKNOWN')
 C      OPEN(65,FILE=SPINELLIPSE1, STATUS='UNKNOWN')
 C      OPEN(66,FILE=SPINELLIPSE2, STATUS='UNKNOWN')
-C      OPEN(67,FILE=FFT,          STATUS='UNKNOWN')  
+C      OPEN(67,FILE=FFT,          STATUS='UNKNOWN')
       OPEN(68,FILE=ISPINSPREAD,  STATUS='UNKNOWN')
 C
 C
@@ -268,7 +268,7 @@ C
 C
 C
 C     ***************************************************************
-C     *  LOOP OVER THE ENERGY STEPS.                                *    
+C     *  LOOP OVER THE ENERGY STEPS.                                *
 C     *  TWO MODES ARE RUNNING.                                     *
 C     *                                                             *
 C     *  MODE 1 :                                                   *
@@ -283,13 +283,13 @@ C     *  MODE 2 :                                                   *
 c     *                                                             *
 C     *  OTHERWISE, DO 1) TO 4) JUST ONECE, I.E. TO GET THE         *
 C     *  PERTURBED 6X6 OPTICS AND THE EMITTANCE BUT NO SPIN STUFF.  *
-C     *  THEN, FOR THE SPIN DO A SEPARATE LOOP OVER ENERGY (SINCE   * 
+C     *  THEN, FOR THE SPIN DO A SEPARATE LOOP OVER ENERGY (SINCE   *
 C     *  THE CLOSED ORBIT DOESN'T CHANGE IF ENERGY JUMPS IN THE     *
 C     *  MAGNETS ARE NEGLECTED). HOWEVER THE CAVITY VOLTAGE MUST    *
 C     *  BE RECALCULATED IN THE NEW SPIN LOOP.                      *
 C     *  ALSO, IF IPTCO=2, EVEN SKIP THE PERTURBED 6X6 OPTICS AND   *
 C     *  THE EMITTANCE.                                             *
-C     *                                                             *  
+C     *                                                             *
 C     *  MODE 3 :                                                   *
 C     *                                                             *
 C     *  IF IPTCO=2, THEN JUST LOOP THE SPIN.                       *
@@ -297,14 +297,14 @@ C     ***************************************************************
 C
 C
 C
-      IF(IRAD.EQ.1.AND.IPTCO.EQ.2)THEN 
+      IF(IRAD.EQ.1.AND.IPTCO.EQ.2)THEN
       WRITE(53,'(A)')' Incompatible values of IRAD and IPTCO. So STOP'
       STOP
       ENDIF
 C
 C
 C=====For crazy normalisations in SPIN.F
-      NCRAZY = 0 
+      NCRAZY = 0
 
 C=====ENERGY LOOP---NUMBER OF STEPS =1  UNLESS WE LOOP OVER CLOSED ORBITS.
       ISTEP=1
@@ -332,7 +332,7 @@ C      IF(1.EQ.1)STOP
 C
       IF(ISECT.EQ.0.AND.ILIN.NE.0)
      +                              CALL LINOPT(E0,IE0,U0,CIR)
-  
+
 C      IF(1.EQ.1)STOP
 
       IF(ISECT.EQ.1.AND.ILIN.NE.0)
@@ -344,7 +344,7 @@ C
       IF(ITWP.NE.0)STOP
       IF(IPTCO.EQ.2)GO TO 50    !Have done 1 energy step with just LINOPT.
 C                          !Now go to the special SPIN loop.
-C                          !IPTCO = 2 makes no sense if IRAD = 1. 
+C                          !IPTCO = 2 makes no sense if IRAD = 1.
 C                          !KEEP GOING FOR JUST ONE ENERGY STEP IF IPTCO = 1 or 0.
 C
 C
@@ -409,22 +409,22 @@ C      IF(ISECT.NE.0)GO TO 12345
 C
 C       write(*,'(A,I10,F15.6)')' Slick: reached here 2',ICORR
 C
-C=======Get and correct the closed orbit. But only if 
+C=======Get and correct the closed orbit. But only if
       IF(IPTCO.EQ.1.AND.ICORR*KICK*(KSEED1+KSEED2+KSEED5).NE.0)THEN
-      CALL FIXORB1(E0,IE0,U0,CRAD,FREQ,KKICK)   ! Get roughly corrected orbit 
+      CALL FIXORB1(E0,IE0,U0,CRAD,FREQ,KKICK)   ! Get roughly corrected orbit
 C       write(*,'(A,I10,F15.6)')' Slick: reached here 3'
 C      CALL FIXORB2(E0,IE0,U0,CRAD,FREQ,KKICK)   ! Do a fine correction
-C      CALL FIXORB5(E0,IE0,U0,CRAD,FREQ,KKICK)   ! Test the outcome. 
+C      CALL FIXORB5(E0,IE0,U0,CRAD,FREQ,KKICK)   ! Test the outcome.
       ENDIF
 
 C      IF(1.EQ.1)STOP
 
 
       IF(IPTCO.EQ.1.AND.IKMIN*KICK*(KSEED1+KSEED2+KSEED5).NE.0)THEN
-      CALL FIXORB1(E0,IE0,U0,CRAD,FREQ,KKICK)   ! Get roughly corrected orbit 
-C      CALL FIXORB5(E0,IE0,U0,CRAD,FREQ,KKICK) 
+      CALL FIXORB1(E0,IE0,U0,CRAD,FREQ,KKICK)   ! Get roughly corrected orbit
+C      CALL FIXORB5(E0,IE0,U0,CRAD,FREQ,KKICK)
       CALL FIXORB3(E0,IE0,U0,CRAD,FREQ,KKICK)
-      CALL FIXORB5(E0,IE0,U0,CRAD,FREQ,KKICK)   ! Test the outcome. 
+      CALL FIXORB5(E0,IE0,U0,CRAD,FREQ,KKICK)   ! Test the outcome.
       ENDIF
 C=======Construct the corrected closed orbit to be used for the rest.
 C      IF(1.EQ.1)STOP
@@ -463,7 +463,7 @@ C      IF(1.EQ.1)STOP
       IF(ANTIDP.LT.0)THEN
       WRITE(53,1063)
       STOP
-      ENDIF 
+      ENDIF
 C
 C
 C      IF(1.EQ.1)STOP
@@ -552,7 +552,7 @@ C
 C
 C=====IF IRAD=0 CALCULATE THE SPIN STUFF IN A LOOP OVER ENERGY HERE.
 C=====IF IPTCO=2 SET THE C.O. TO ZERO FOR THE SPIN STUFF.
-C     IF IPTCO=0 THE C.O. WAS NEVER CALCULATED AND IS THUS ZERO ANTWAY. 
+C     IF IPTCO=0 THE C.O. WAS NEVER CALCULATED AND IS THUS ZERO ANTWAY.
 C=====IF IVROT=1 RESET THE ROTATORS & MATRICES AT EACH NEW ENERGY.
       IF(IPTCO.NE.2)GO TO 265
       DO 264 I=1,NELEM
@@ -640,7 +640,7 @@ C
 
 
 
-      CALL DATI
+      CALL DATEF
 
 
 
@@ -650,18 +650,18 @@ C
       CLOSE(65)
       CLOSE(64)
       CLOSE(63)
-      CLOSE(62) 
-      CLOSE(61) 
-      CLOSE(60) 
-      CLOSE(59) 
-      CLOSE(58) 
-      CLOSE(57) 
-      CLOSE(56) 
-      CLOSE(55) 
-      CLOSE(54) 
-      CLOSE(53)  
-      CLOSE(52) 
-      CLOSE(51) 
+      CLOSE(62)
+      CLOSE(61)
+      CLOSE(60)
+      CLOSE(59)
+      CLOSE(58)
+      CLOSE(57)
+      CLOSE(56)
+      CLOSE(55)
+      CLOSE(54)
+      CLOSE(53)
+      CLOSE(52)
+      CLOSE(51)
 C
 C
 C

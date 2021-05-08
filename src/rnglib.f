@@ -877,9 +877,9 @@ c
 c  Check whether the package must be initialized.
 c
       if ( .not. initialized_get ( ) ) then
-        write ( *, '(a)' ) ' '
-        write ( *, '(a)' ) 'INIT_GENERATOR - Note:'
-        write ( *, '(a)' ) '  Initializing RNGLIB package.'
+C       write ( *, '(a)' ) ' '
+C       write ( *, '(a)' ) 'INIT_GENERATOR - Note:'
+C       write ( *, '(a)' ) '  Initializing RNGLIB package.'
         call initialize ( )
       end if
 c
@@ -990,9 +990,9 @@ c
       g = 1
       call cgn_set ( g )
 
-      write ( *, '(a)' ) ' '
-      write ( *, '(a)' ) 'INITIALIZE - Note:'
-      write ( *, '(a)' ) '  The RNGLIB package has been initialized.'
+C     write ( *, '(a)' ) ' '
+C     write ( *, '(a)' ) 'INITIALIZE - Note:'
+C     write ( *, '(a)' ) '  The RNGLIB package has been initialized.'
 
       return
       end
