@@ -63,7 +63,7 @@ C 351  WRITE(53,94)(TM6B(III,J),J=1,6)
    20 CONTINUE
 C
 C      CALL UCOPY(TREV6,TM6A,72)     ! March 2009 for dropping the CERNLIB
-      TM6A = TREV6 
+      TM6A = TREV6
       WRITE(53,37)
       DO 35 I=1,6
    35 WRITE(53,94)(TM6A(I,J),J=1,6)
@@ -140,9 +140,9 @@ C=====THE SAME ORDER, REORDER THE DAMPING CONSTANTS FOR USE IN EMITNC.
       DIF=DABS(TUN(JJ)-DTUN(J))
       IF(DIF.LT.0.002)TDAMP(JJ)=DAMP(J)
       IF(DIF.LT.0.002)NDAMP=NDAMP+1
-C      IF(DIF.LT.0.001)TDAMP(JJ)=DAMP(J)      !Changed June 2004 for eRHIC coupling 
+C      IF(DIF.LT.0.001)TDAMP(JJ)=DAMP(J)      !Changed June 2004 for eRHIC coupling
 C      IF(DIF.LT.0.001)NDAMP=NDAMP+1          !studies
-      write(*,*)JJ,J,TUN(JJ),DTUN(J),DIF,TDAMP(JJ),NDAMP
+C     write(*,*)JJ,J,TUN(JJ),DTUN(J),DIF,TDAMP(JJ),NDAMP
    24 CONTINUE                                ! Increased from 0.001 to 0.002, Aug. 2010 for LHeC
    25 CONTINUE
       IF(NDAMP.NE.3)GO TO 9988
