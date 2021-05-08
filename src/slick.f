@@ -640,7 +640,7 @@ C
 
 
 
-      CALL DATEF
+      CALL DATET
 
 
 
