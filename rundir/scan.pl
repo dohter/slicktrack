@@ -10,8 +10,9 @@ if ($num_args != 2) {
 $name=$ARGV[0];
 $np_s=$ARGV[1];
 
-$E00=9.25;
-$NSTEP=400/$np_s;
+#$E00=9.25;
+$E00=17.54;
+$NSTEP=320/$np_s;
 $DE0=0.002;
 print "Scanning $name on $np_s processes\n";
 
