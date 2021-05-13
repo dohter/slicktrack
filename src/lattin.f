@@ -760,8 +760,8 @@ C=====Edge focussing from input file. Redefine the type to 3.
             ID(NTY)=3                      !Change the type number from 97 to 3.
             XX(NTY)=0.D0                   !Give zero strength.
             X2(NTY)=0.D0
-C           YY(NTY)=1.D-10  *0.D0            !Don't give edge fields zero length.
-            YY(NTY)=5.D-20                   !Give edge fields some length too.
+C           YY(NTY)=1.D-10  *0.D0          !Don't give edge fields zero length.
+            YY(NTY)=5.D-2                  !Give edge fields some length too.
 C=====SET UP A FIRST DRIFT OF ZERO LENGTH----THIS IS NOT THE I.P.!
 C=====THE I.P. WILL BE THE 3RD ELEMENT!---AFTER THIS DUMMY ELEMENT & THE
 C=====FOLLOWING ZERO LENGTH DRIFT.
