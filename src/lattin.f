@@ -753,6 +753,7 @@ C     circumference and energy.
 C=======EDGE FIELDS for SPRINT PROGRAMS
           CASE(97)
 C=====Edge focussing from input file. Redefine the type to 3.
+            XX(NTY) = dabs(XX(NTY))
             TMAT(2,1,NTY) =  XX(NTY)  * 1.0D0     !Fanglei modified on May 28, 2020, horizontal is defocusing, vertical is focusing
             TMAT(4,3,NTY) = -XX(NTY)  * 1.0D0     !SY's book, page 66, exercise 2.2.2
 
