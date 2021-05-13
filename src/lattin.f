@@ -760,7 +760,8 @@ C=====Edge focussing from input file. Redefine the type to 3.
             ID(NTY)=3                      !Change the type number from 97 to 3.
             XX(NTY)=0.D0                   !Give zero strength.
             X2(NTY)=0.D0
-            YY(NTY)=1.D-10  *0.D0                 !And give edge fields zero length.
+C           YY(NTY)=1.D-10  *0.D0            !Don't give edge fields zero length.
+            YY(NTY)=5.D-20                   !Give edge fields some length too.
 C=====SET UP A FIRST DRIFT OF ZERO LENGTH----THIS IS NOT THE I.P.!
 C=====THE I.P. WILL BE THE 3RD ELEMENT!---AFTER THIS DUMMY ELEMENT & THE
 C=====FOLLOWING ZERO LENGTH DRIFT.
@@ -997,7 +998,8 @@ C=====    RE-ANCHOR THE LATTICE ON THIS ELEMENT BEFORE PROCEEDING.
           IF(IREM.EQ.10.OR.IREM.EQ.14)TOTL=YY(IN)*NUS+PLT
           IF(IREM.EQ. 6.OR.IREM.EQ. 7.OR.IREM.EQ.17)TOTL=PLT
           IF((IREM.EQ.3.AND.NAME(IN)(1:2).EQ.'CQ').OR.
-     +       (IREM.EQ.4.AND.NAME(IN)(1:2).EQ.'RQ'))TOTL=PLT
+     +       (IREM.EQ.4.AND.NAME(IN)(1:2).EQ.'RQ').OR.
+     +       (IREM.EQ.3.AND.NAME(IN)(1:2).EQ.'EE'))TOTL=PLT
 C
 C=====    =Set the strength of v. kickers used to shift quads.
 C          Allow the quads a maximum misplacement of WID1*SCUT1*1.D-3 m.
