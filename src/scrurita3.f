@@ -185,13 +185,13 @@ C====Naive spin tune.
       NU=E0/0.440652D0 * 1.0D0       ! Can scale a gamma indep. of the energy.
 
 
-      WRITE(53,103)
-      WRITE(53,103)
+C     WRITE(53,103)
+C     WRITE(53,103)
   103 FORMAT(/,'  ')
 
 
 C     MODES = 1                 !Switch on/off single and combined mode calcs.
-      WRITE(53,929)MODES,IE0
+C     WRITE(53,929)MODES,IE0
   929 FORMAT('1','Entering subroutine SCRURITA3 for M-C tracking to ``me
      +asure'' the rate of depolarisation.', '   MODES = ',I2,
      +                                      '  Energy step =  ',I5)
@@ -233,7 +233,7 @@ C
 C=====CHECK TOTAL ORBIT DEFLECTION TO ENSURE THAT ROTATOR INTERPOLATION
 C=====IS O.K.
       DANGH=DABS(PI2-ANGH)
-      WRITE(53,2312)ANGH,ANGV
+C     WRITE(53,2312)ANGH,ANGV
  2312 FORMAT(' ','Total bending angles', 2F15.10)
  2311 CONTINUE
 C
@@ -270,7 +270,7 @@ C      CALL F02AGF(TRIN3,3,3,RR3,RI3,VR3,3,VI3,3,INTGE3,IFAIL)
 C=====Locate the real unit eigenvalue:
   255 IF(DABS(WI3(I)).LT.1.D-9.AND.WR3(I).GT.0.9999D0)NN=I
       IF(NN .NE. 4)GO TO 241
-      WRITE(53,242)
+C     WRITE(53,242)
   242 FORMAT(' ','No real unit spin eigenvalue found----so STOP')
       STOP
 C
@@ -307,9 +307,9 @@ C
       ZWSAVE = ZW
 C
 
-      WRITE(53,933)NU,STUNE,RNU
-      DO 250 I=1,3
-  250 WRITE(53,932)(ROT(I,J),J=1,3),WR3(I),WI3(I),(ZW(J,I),J=1,3)
+C     WRITE(53,933)NU,STUNE,RNU
+C     DO 250 I=1,3
+C 250 WRITE(53,932)(ROT(I,J),J=1,3),WR3(I),WI3(I),(ZW(J,I),J=1,3)
 
   933 FORMAT(' ',' E0/.440652=',T14,F9.6,3X,F9.6,3X,F9.6,
      +                               //,' SPIN ROT. MATRIX AROUN',
@@ -322,10 +322,10 @@ C-------------------------------------------------------------------------------
 C======Set up a 6-D Gaussian distribution according to the covariance matrix
 C      from emitnc.f. Use NPART3 particles.
 
-      WRITE(53,98)
+C     WRITE(53,98)
 C      write(*,98)
 
-      WRITE(53,951)COVMATIN
+C     WRITE(53,951)COVMATIN
    98 FORMAT(//,' The theoretical beam covariance matrix <Xi*Xj>'
      + ,'(mm*mm,mm*mrad...) at the 1-st beam line element:')
   951 FORMAT(T6,6F13.5)
@@ -349,8 +349,8 @@ C      CALL G05EAF(DISTMEAN,6,COVMATIN,6,EPS,COVVEC,28,IFAIL1)  ! G05EAF is repl
       WRITE(53,'(A,A,I10,A)')' ', 'IFAIL1 = ',IFAIL1,' STOP'
       ENDIF
 
-      WRITE(53,103)
-      WRITE(53,103)
+C     WRITE(53,103)
+C     WRITE(53,103)
 
 
 
@@ -447,13 +447,13 @@ C======WIND BACK THE SPIN BASIS==========================================
 
       TREV8    = MATMUL(TW8A,TREV8)
 
-      WRITE(53,103)
-      WRITE(53,103)
-      WRITE(53,'(A)')
-     +   ' 1-turn spin-(symplectic)orbit matrix, generated afresh.'
+C     WRITE(53,103)
+C     WRITE(53,103)
+C     WRITE(53,'(A)')
+C    +   ' 1-turn spin-(symplectic)orbit matrix, generated afresh.'
 
-      DO 36 I=1,8
-   36 WRITE(53,914)(TREV8(I,J),J=1,8)
+C     DO 36 I=1,8
+C  36 WRITE(53,914)(TREV8(I,J),J=1,8)
   914 FORMAT(8F12.5)
 
 C=====GET 8X8 EIGENVECTORS FOR ONE REVOLUTION & ORDER THEM==============
@@ -498,7 +498,7 @@ C=====Renormalize vectors as in SMILE but keep the usual NORM routine.
 C=====Note: The next few lines redefine the tunes from RENORM.
       CALL RENORM(ZZ,8,WR8,WI8)
 C
-      WRITE(53,924)
+C     WRITE(53,924)
   924 FORMAT(////,' Eigenvalues and eigenvectors:',/,T8,
      +                                          'REAL',
      +                                          T18,'IMAG',T122,'TUNES')
@@ -509,12 +509,13 @@ C=====WITHOUT USING THE SINE.
 C     IF(DABS(WR8(I)) .LE. 1.D0)TUN=DACOS(WR8(I))/(2.*PI)
       TUN=DATAN2(WI8(I),WR8(I))/(2.*PI)
       TN(I)=TUN
-  281 WRITE(53,923)WR8(I),WI8(I),(ZZ(J,I),J=1,8),TUN
+C 281 WRITE(53,923)WR8(I),WI8(I),(ZZ(J,I),J=1,8),TUN
+  281 CONTINUE
   923 FORMAT(2F12.5,2X,'--->  (',8F10.5,' )',F15.8)
       CALL NORM(ZZ,8,AB)
 
       IF(AB(1).EQ.0.D0.OR.AB(3).EQ.0.D0.OR.AB(5).EQ.0.D0)THEN
-      WRITE(53,'(A)')' Normalisation of 8-eigenvectors crazy.'
+C     WRITE(53,'(A)')' Normalisation of 8-eigenvectors crazy.'
       NCRAZY = 1
       RETURN
       ENDIF
@@ -543,7 +544,7 @@ C     correct pairs of real vectors and with signs.
 
 C=====Now set the (spin) alphas and betas for the 3 modes.
 
-      WRITE(53,103)
+C     WRITE(53,103)
       DO 66 INP = 1,NPART3
 
       ORBVEC1(:,INP) = 2.D0*
@@ -579,20 +580,20 @@ C    Differential scaling to help display.
 
 
       IF(INP.LE.5)THEN
-      WRITE(53,'(A)')
-     + ' A sample of starting spin-orbit vectors (mm,mrad..)'
-      WRITE(53,'(A,A,I5,8F12.6)')' ',
-     +     'Spin-orbit vector:    all',
-     +                          INP,SORBVEC(1:6,INP),SPINVECA(:,INP)
-      WRITE(53,'(A,A,I5,8F12.6)')' ',
-     +     'Spin-orbit vector: mode-1',
-     +                          INP,ORBVEC1(1:6,INP),SPINVEC1(:,INP)
-      WRITE(53,'(A,A,I5,8F12.6)')' ',
-     +     'Spin-orbit vector: mode-2',
-     +                          INP,ORBVEC2(1:6,INP),SPINVEC2(:,INP)
-      WRITE(53,'(A,A,I5,8F12.6)')' ',
-     +     'Spin-orbit vector: mode-3',
-     +                          INP,ORBVEC3(1:6,INP),SPINVEC3(:,INP)
+C     WRITE(53,'(A)')
+C    + ' A sample of starting spin-orbit vectors (mm,mrad..)'
+C     WRITE(53,'(A,A,I5,8F12.6)')' ',
+C    +     'Spin-orbit vector:    all',
+C    +                          INP,SORBVEC(1:6,INP),SPINVECA(:,INP)
+C     WRITE(53,'(A,A,I5,8F12.6)')' ',
+C    +     'Spin-orbit vector: mode-1',
+C    +                          INP,ORBVEC1(1:6,INP),SPINVEC1(:,INP)
+C     WRITE(53,'(A,A,I5,8F12.6)')' ',
+C    +     'Spin-orbit vector: mode-2',
+C    +                          INP,ORBVEC2(1:6,INP),SPINVEC2(:,INP)
+C     WRITE(53,'(A,A,I5,8F12.6)')' ',
+C    +     'Spin-orbit vector: mode-3',
+C    +                          INP,ORBVEC3(1:6,INP),SPINVEC3(:,INP)
       ENDIF
    66 CONTINUE
 
@@ -601,11 +602,11 @@ C=====Get the covariance matrices for this sample with clever use of MATMUL
 C      SORBVET(1:NPART3,:) = TRANSPOSE(SORBVEC(:,1:NPART3))
 C      SORBVEC(:,1:NPART3) = TRANSPOSE(SORBVET(1:NPART3,:))
       COVSIM = MATMUL(SORBVEC(:,1:NPART3),SORBVET(1:NPART3,:))/NPART3
-      WRITE(53,899)
+C     WRITE(53,899)
 
   899 FORMAT(//,' The generated spin-orbit covariance matrix',
      +     ' <Xi*Xj>(mm*mm,mm*mrad...) at the 1-st beam line element:')
-      WRITE(53,955)COVSIM
+C     WRITE(53,955)COVSIM
   955 FORMAT(T6,8F13.5)
 
       SPINVETA(1:NPART3,:)= TRANSPOSE(SPINVECA(:,1:NPART3))
@@ -620,26 +621,26 @@ C      SORBVEC(:,1:NPART3) = TRANSPOSE(SORBVET(1:NPART3,:))
      +     = MATMUL(SPINVEC2(:,1:NPART3),SPINVET2(1:NPART3,:))/NPART3
       COVSPIN3(:,:,1)
      +     = MATMUL(SPINVEC3(:,1:NPART3),SPINVET3(1:NPART3,:))/NPART3
-      WRITE(53,876)
+C     WRITE(53,876)
   876 FORMAT(/,' The generated spin covariance matrix',
      +          ' mode-A <Si*Sj>(mrad*mrad...)',
      +          ' at the 1-st beam line element:')
-      WRITE(53,956)COVSPINA(:,:,1)
-      WRITE(53,877)
+C     WRITE(53,956)COVSPINA(:,:,1)
+C     WRITE(53,877)
   877 FORMAT(/,' The generated spin covariance matrix',
      +          ' mode-1 <Si*Sj>(mrad*mrad...)',
      +          ' at the 1-st beam line element:')
-      WRITE(53,956)COVSPIN1(:,:,1)
-      WRITE(53,878)
+C     WRITE(53,956)COVSPIN1(:,:,1)
+C     WRITE(53,878)
   878 FORMAT(/,' The generated spin covariance matrix',
      +          ' mode-2 <Si*Sj>(mrad*mrad...)',
      +          ' at the 1-st beam line element:')
-      WRITE(53,956)COVSPIN2(:,:,1)
-      WRITE(53,879)
+C     WRITE(53,956)COVSPIN2(:,:,1)
+C     WRITE(53,879)
   879 FORMAT(/,' The generated spin covariance matrix',
      +          ' mode-3 <Si*Sj>(mrad*mrad...)',
      +          ' at the 1-st beam line element:')
-      WRITE(53,956)COVSPIN3(:,:,1)
+C     WRITE(53,956)COVSPIN3(:,:,1)
 
 
 C      IF(1.EQ.1)STOP
@@ -717,12 +718,12 @@ C======WIND BACK THE SPIN BASIS==========================================
       TREV8D   = MATMUL(TW8A,TREV8D)
 
 
-      WRITE(53,103)
-      WRITE(53,103)
-      WRITE(53,'(A,/,A,I1,A)')' 1-turn spin-(damped)orbit matrix',
-     +                               ' NDAMP3 = ',NDAMP3, ' !!!!!!!'
-      DO 336 I=1,8
-  336 WRITE(53,914)(TREV8D(I,J),J=1,8)
+C     WRITE(53,103)
+C     WRITE(53,103)
+C     WRITE(53,'(A,/,A,I1,A)')' 1-turn spin-(damped)orbit matrix',
+C    +                               ' NDAMP3 = ',NDAMP3, ' !!!!!!!'
+C     DO 336 I=1,8
+C 336 WRITE(53,914)(TREV8D(I,J),J=1,8)
 
 
 
@@ -770,8 +771,8 @@ C====If it's a beam-beam element, treat this as a section.
       YYBB(NSECT) = YYY
       NSOLBB(NSECT) =NSOL(ITY)
       IF(NSECT.GT.LIMSECT)THEN
-      WRITE(53,103)
-      WRITE(53,103)
+C     WRITE(53,103)
+C     WRITE(53,103)
       WRITE(53,'(A)')' STOP: at b-b--number of sections exceeds LIMSECT'
       STOP
       ENDIF
@@ -953,7 +954,8 @@ C=====WITHOUT USING THE SINE.
 C     IF(DABS(WR8(I)) .LE. 1.D0)TUN=DACOS(WR8(I))/(2.*PI)
       TUN=DATAN2(WI8(I),WR8(I))/(2.*PI)
       TN(I)=TUN
- 2811 WRITE(53,923)WR8(I),WI8(I),(ZZSAVE(J,I),J=1,8),TUN
+C2811 WRITE(53,923)WR8(I),WI8(I),(ZZSAVE(J,I),J=1,8),TUN
+ 2811 CONTINUE
 
 
       WRITE(53,9245)
@@ -969,7 +971,8 @@ C=====WITHOUT USING THE SINE.
 C     IF(DABS(WR8(I)) .LE. 1.D0)TUN=DACOS(WR8(I))/(2.*PI)
       TUN=DATAN2(WI8(I),WR8(I))/(2.*PI)
       TN(I)=TUN
- 2812 WRITE(53,923)WR8(I),WI8(I),(ZZSECT(J,I,MSECT+1),J=1,8),TUN
+C2812 WRITE(53,923)WR8(I),WI8(I),(ZZSECT(J,I,MSECT+1),J=1,8),TUN
+ 2812 CONTINUE
 
 
 
