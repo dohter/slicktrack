@@ -210,7 +210,7 @@ C     SGN=SGN/DABS(SGN)
 C
 C
 C
-      WRITE(53,933)NU,STUNE,RNU
+      WRITE(53,933)NU,STUNE !,RNU
       DO 250 I=1,3
   250 WRITE(53,932)(ROT(I,J),J=1,3),WR3(I),WI3(I),(ZW(J,I),J=1,3)
 C
@@ -322,8 +322,8 @@ C
 C=====SUM THE n0-AXIS DEVIATIONS OVER THE NON-VERTICAL BEND REGION:
 C     THE ARCS,THE MICRO BETA REGION & THE SUM OF THESE.
 C
-  267 ZZ2=1.D0-ZW(2,1)*ZW(2,1)
-      ZZT=1.D0-ZW(3,1)*ZW(3,1)
+  267 ZZ2=1.D0-ZW(2,1)*ZW(2,1) ! Sin of tilt from vertical of n0
+      ZZT=1.D0-ZW(3,1)*ZW(3,1) ! Sin of tilt from longitudonal of n0
       IF(ZZ2.LT.0.D0)ZZ2=0.D0
       IF(ZZT.LT.0.D0)ZZT=0.D0
 
@@ -342,7 +342,7 @@ C      IF(S.LT.0.5.OR. S.GT.6335.8                      ! For the LHeC
 C     +    .OR.DABS(S-1583.96).LT.0.5
 C     +    .OR.DABS(S-4751.86).LT.0.5 )KTILT=1
 
-      IF(S.LT.398.23 )KTILT=1                            ! For MEIC
+C     IF(S.LT.398.23 )KTILT=1                            ! For MEIC
 
 
 C      IF(S.GT.230.0.AND.S.LT.792.0)KTILT=2            ! For HERA
@@ -350,7 +350,8 @@ C      IF(S.GT.100.0.AND.S.LT.1177.0)KTILT=2           ! For eRHIC
 C      KTILT = 2                                       ! For a simple flat ring.
 C      IF(S.GT.2000.D0.AND.S.LT.24000.D0)KTILT=2        ! For the LHeC
 
-      IF(S.GT.398.23.AND.S.LT.670.22)KTILT=2        ! For MEIC
+C     IF(S.GT.398.23.AND.S.LT.670.22)KTILT=2        ! For MEIC
+      IF(S.GT.161.0.AND.S.LT.477.0)KTILT=2            ! For EIC
 
       IF(KTILT.EQ.1)THEN
       SUMNZM=SUMNZM+DSQRT(ZZ2)
@@ -1126,8 +1127,8 @@ C
      +              R3RP,R3IP,R3RM,R3IM,
      +              TAUP,TAUD0,TAUD1,TAUD2,TAUD3,
      +              SUMNZ,SUMNZM,SUMNTM,SUMNZA,AXIST,
-     +               R1P,R1M,R2P,R2M,R3P,R3M
- 9466 FORMAT(' ',40(E15.7,3X))
+     +               R1P,R1M,R2P,R2M,R3P,R3M,STUNE
+ 9466 FORMAT(' ',41(E15.7,3X))
 
 C      WRITE(54,9466)E0,NU,TN(2),TN(4),TN(6),TN(7),
 C     +              P0,POL1,TAUP,TAUD0,TAUD1,TAUD2,TAUD3
