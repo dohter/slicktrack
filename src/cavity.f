@@ -19,9 +19,10 @@ C=====V*COS(PHI) & V*SIN(PHI) AS NEW INDEPENDENT VARIABLES.
 C
 C
       IMPLICIT REAL*8(A-H,O-Z)
-      SAVE ICALL 
+      SAVE ICALL
+      SAVE RADLOS
       SAVE SINPHI                                          !Needed for the G95 compiler.
-      DATA ICALL/0/        
+      DATA ICALL/0/
 C     DIMENSION VOLT(100).....now stored in clatic.for
 C
       INCLUDE "cnlist.for"
