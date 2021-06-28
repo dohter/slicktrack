@@ -226,7 +226,11 @@ C
 C
       IPRIN1=IPTNML.EQ.1.AND.IE0.EQ.1
       IF(IPRIN1)WRITE(53,931)
-C
+      WRITE(55,990) "#", "S","NAME","IID","N0X","N0Y","N0S",
+     +"M0X","M0Y","M0S", 
+     +"L0X","L0Y","L0S", 
+     +"INDEX"
+      WRITE(55,991) "#", [( I, I=1,13)]
 C
 C
 C
@@ -297,10 +301,13 @@ C
 C
 C
 C     IF((NAME(ITY).EQ.'IP'.OR.II.LT.1000.OR.II.GT.6930).AND.IPRIN1)
-      IF(                     IPRIN1 )
+      IF(                     IPRIN1 ) THEN
 C      IF((NAME(ITY).EQ.'IP'.AND.IPRIN1))
-     +                               WRITE(53,930)S,NAME(ITY),IID,
+C                                    WRITE(53,930)S,NAME(ITY),IID,
+C    +                (ZW(J,1),J=1,3),(ZW(J,2),J=1,3),(ZW(J,3),J=1,3),II
+                                     WRITE(55,930)S,NAME(ITY),IID,
      +                (ZW(J,1),J=1,3),(ZW(J,2),J=1,3),(ZW(J,3),J=1,3),II
+      ENDIF
       IF(NAME(ITY).EQ.'IP6'.or.NAME(ITY).EQ.'IP12')THEN
       WRITE(53,9277)S
       WRITE(533,9277)S
@@ -872,13 +879,15 @@ C      DDLRUF=NU*(PI-ANGH)
       IF(IPRIN2)
      +         WRITE(53,937)S,NAME(ITY),IID,
      +         (ZW(J,1),J=1,3),DMX,DMY,DMZ,DDM,DLX,DLY,DLZ,DDL
-      IF(IPRIN2)WRITE(55,938)S,NAME(ITY),II,IID,
+      IF(IPRIN2) THEN
+              WRITE(55,938)S,NAME(ITY),II,IID,
      +(ZW(J,1),J=1,3),DMX,DMY,DMZ,DDM,DLX,DLY,DLZ,DDL,
      +                       DDABS,DDLABS,DDMRUF,
      +                XY71,XY72,XY712,XY73,XY74,XY734,QD7,
      +                XY51,XY52,XY512,XY53,XY54,XY534,QD5,
      +                D1(II),D3(II),CURVAT,SOLFLD,DX(II),DY(II),
      +                BETACX(II),BETACY(II),PHASE1,PHASE2
+      endif
 C
 C
 C
@@ -1119,16 +1128,20 @@ C
       SUMNZA=     (SUMNZA)*1000.D0
 
 
-      WRITE(54,9466)E0,NU,
+C     WRITE(54,9466)E0,NU,
+C    +              P0,POL1,POLM1,POLM2,POLM3,
+C    +              EMPOL2,DMY,
+C    +              R1RP,R1IP,R1RM,R1IM,
+C    +              R2RP,R2IP,R2RM,R2IM,
+C    +              R3RP,R3IP,R3RM,R3IM,
+C    +              TAUP,TAUD0,TAUD1,TAUD2,TAUD3,
+C    +              SUMNZ,SUMNZM,SUMNTM,SUMNZA,AXIST,
+C    +               R1P,R1M,R2P,R2M,R3P,R3M,STUNE,1.d0/(WP0+WD0)
+      WRITE(54,9466)E0,NU,STUNE,
      +              P0,POL1,POLM1,POLM2,POLM3,
-     +              EMPOL2,DMY,
-     +              R1RP,R1IP,R1RM,R1IM,
-     +              R2RP,R2IP,R2RM,R2IM,
-     +              R3RP,R3IP,R3RM,R3IM,
      +              TAUP,TAUD0,TAUD1,TAUD2,TAUD3,
-     +              SUMNZ,SUMNZM,SUMNTM,SUMNZA,AXIST,
-     +               R1P,R1M,R2P,R2M,R3P,R3M,STUNE
- 9466 FORMAT(' ',41(E15.7,3X))
+     +              1.d0/(WP0+WD0)
+ 9466 FORMAT(' ',14(E15.7,3X))
 
 C      WRITE(54,9466)E0,NU,TN(2),TN(4),TN(6),TN(7),
 C     +              P0,POL1,TAUP,TAUD0,TAUD1,TAUD2,TAUD3
@@ -1296,7 +1309,9 @@ C
      +                       9X,'DMX',7X,'DMY',7X,'DMZ',7X,'DDM',
      +                      11X,'DLX',7X,'DLY',7X,'DLZ',7X,'DDL'/)
 C
-  930 FORMAT(1X,F9.2,1X,A8,1X,I2,3F9.5,10X,3F9.5,10X,3F9.5,I8)
+  930 FORMAT(1X,F9.2,1X,A8,1X,I8,3F9.5,10X,3F9.5,10X,3F9.5,I8)
+  990 FORMAT(A1,A9,1X,A8,1X,A8,3A9,10X,3A9,10X,3A9,A8)
+  991 FORMAT(A1,I9,1X,I8,1X,I8,3I9,10X,3I9,10X,3I9,I8)
 C
 C
   937 FORMAT(' ',F6.1, 1X,A8,1X,I2, 3F8.4, 4X,4F10.4,4X,4F10.4)

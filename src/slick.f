@@ -231,6 +231,16 @@ C    *************** Fanglei comments some of the following open files on 20Dec1
 C    *************** Fanglei uncomments on 12May20 ********
       OPEN(533,FILE=GMT,         STATUS='UNKNOWN')
       OPEN(54,FILE=POLARI,       STATUS='UNKNOWN')
+      WRITE(54,9467)"#", "E0", "AGAMMA","NU0",
+     +              "PBKS","PTOT","PX","PY","PS",
+     +              "TAUBKS","TAUD0","TAUDX","TAUDY","TAUDS",
+     +              "TAUTOT"
+      WRITE(54,9468)"#",[(I, I=1,14)]
+     +              
+     +             
+     +            
+9467  FORMAT(' ',(A1,A14,3X,13(A15,3X)))
+9468  FORMAT(' ',(A1,I14,3X,13(I15,3X)))
       OPEN(55,FILE=AZIFUNCS,     STATUS='UNKNOWN')
 C      OPEN(56,FILE=GAUSSES,      STATUS='UNKNOWN')
       OPEN(57,FILE=ELLIPSE1,     STATUS='UNKNOWN')

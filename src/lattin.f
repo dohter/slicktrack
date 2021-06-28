@@ -253,6 +253,7 @@ C=====SET DEFAULT VALUES
       KG6 =0;KG7 =0;KG8 =0;KG9 =0;KG10=0
       KG11=0;KG12=0;KG13=0;KG14=0;KG15=0
       KG16=0;KG17=0;KG18=0;KG19=0;KG20=0
+      IBB = 0
 C
       CENPOS = -1000.D0 !Element centres. They remain  large and -ve if not set later.
       RADSCALE = 0.D0   !Radiation scale for the kicks at the starts of sections.
@@ -509,27 +510,27 @@ C
 C
 C
 C=====READ THE DATA FILE HEADING
-      READ (52,901)TEXT
-      WRITE(53,901)TEXT
-      READ (52,901)TEXT
-      WRITE(53,901)TEXT
-      READ (52,901)TEXT
-      WRITE(53,901)TEXT
+C     READ (52,901)TEXT
+C     WRITE(53,901)TEXT
+C     READ (52,901)TEXT
+C     WRITE(53,901)TEXT
+C     READ (52,901)TEXT
+C     WRITE(53,901)TEXT
 C
 C=====CHECK FORMAT AND RANDOM NUMBER GENERATOR SEEDS.
 C      CALL RDMOUT(JJSEED)
-      READ(52,801)IFORM
-      WRITE(53,801)IFORM
-      READ(52,805)KSEED                ! Old random generator seed.
-      WRITE(53,805)KSEED
-      READ(52,805)NINSOLD              ! Ignore: history.
-      WRITE(53,805)NINSOLD
+C     READ(52,801)IFORM
+C     WRITE(53,801)IFORM
+C     READ(52,805)KSEED                ! Old random generator seed.
+C     WRITE(53,805)KSEED
+C     READ(52,805)NINSOLD              ! Ignore: history.
+C     WRITE(53,805)NINSOLD
 
 C      JSEED=ISEED(KSEED)
 C      WRITE(53,802)IFORM,JSEED,JJSEED
-      IF(IFORM.EQ.4.OR.IFORM.EQ.5.OR.IFORM.EQ.6)GO TO 804
-      WRITE(53,803)
-      STOP
+C     IF(IFORM.EQ.4.OR.IFORM.EQ.5.OR.IFORM.EQ.6)GO TO 804
+C     WRITE(53,803)
+C     STOP
 
 
   804 CONTINUE
@@ -537,12 +538,12 @@ C      CALL G05CBF(KSEED1)   G05CBF is replaced by G05KFF
 C      SEED(1) = KSEED1
 C      CALL G05KFF(GENID,SUBID,SEED,LSEED,STATE,LSTATE,IFAIL)
 
-      SCL= 0.001D+0
-      SEP=-0.001001D+0
-      SEP=-0.0001001D+0
+C     SCL= 0.001D+0
+C    SEP=-0.001001D+0
+     SEP=-0.0001001D+0
 
-      IF(IFORM.EQ.5.OR.IFORM.EQ.4)SCL=0.0001D+0
-      IF(IFORM.EQ.5.OR.IFORM.EQ.4)SEP=-0.001101D+0
+C     IF(IFORM.EQ.5.OR.IFORM.EQ.4)SCL=0.0001D+0
+C     IF(IFORM.EQ.5.OR.CFORM.EQ.4)SEP=-0.001101D+0
 C
 C
 C
@@ -761,7 +762,7 @@ C           XX(NTY) = 0.d0
             ID(NTY)=3                      !Change the type number from 97 to 3.
             XX(NTY)=0.D0                   !Give zero strength.
             X2(NTY)=0.D0
-            YY(NTY)=1.D-10                 !Don't give edge fields zero length.
+C           YY(NTY)=1.D-10                 !Don't give edge fields zero length.
 C           YY(NTY)=5.D-2                  !Give edge fields some length too.
 C=====SET UP A FIRST DRIFT OF ZERO LENGTH----THIS IS NOT THE I.P.!
 C=====THE I.P. WILL BE THE 3RD ELEMENT!---AFTER THIS DUMMY ELEMENT & THE
@@ -872,6 +873,7 @@ C          to allow the lattice to be constructed. So use this to distinguish.
           IF(IREM.EQ.3.AND.YY(IN).GT.0.D0)THEN
           QREM  = XX(IN)   *2.D0    ! *2 to get the strength of the full quad.
           QYREM = YY(IN)   *2.D0    ! *2 to get the   length of the full quad.
+          INREM = IN
           ENDIF
 C
 C=====    =If a CF has been reached, save the strength for use with a VQ,HQ,RQ,CQ later.
@@ -1026,6 +1028,7 @@ C  777         CALL RANNOR(GAUS1,GAUS2)
               KG1 = KG1 + 1
               XX(IN)=QREM*G1(KG1)*1.D-3    ! Note the plus sign.
               YY(IN)=QYREM
+              WRITE(*,*) NAME(INREM), G1(KG1)*1.D-3
               TMAT(4,6,IN)=+XX(IN)
               TMAT(5,3,IN)=-XX(IN)
               TMAT(4,7,IN)=-XX(IN)
@@ -1165,7 +1168,10 @@ C=====NUMBER OF MAGNETS AND LENGTH OF RING
       IF(JID.EQ. 3.AND.NAME(ITYPE(I))(1:2).EQ.'CQ')IQUADC=IQUADC+1
       IF(JID.EQ. 4             )ISKQ =ISKQ +1
       IF(JID.EQ. 8             )ISEXT=ISEXT+1
-      IF(JID.EQ.17.OR.NAME(ITYPE(I))(1:2).EQ.'BB')IBB=IBB+1
+      IF(JID.EQ.17.OR.NAME(ITYPE(I))(1:2).EQ.'BB')then
+        IBB=IBB+1
+        write(*,*) JID, ITYPE(I)
+      endif
       GO TO 69
    67 RLENGE=RLENGE+YY(ITYPE(I))*0.D0       !Kickers are given zero length.
       IF(JID.EQ.7)IVCOR=IVCOR+1

@@ -26,11 +26,11 @@ CDB      COMMON/JAMJAM/DJAM(20,20)
       DIMENSION A(N,N),WR(N),WI(N),B(8,8),C(8),C2(8),KK(3)
 
       CALL NORM2(A,N,C)
-      IF(C(1).EQ.0.D0.OR.C(3).EQ.0.D0.OR.C(5).EQ.0.D0)THEN 
+      IF(C(1).EQ.0.D0.OR.C(3).EQ.0.D0.OR.C(5).EQ.0.D0)THEN
       WRITE(53,'(A,A)')' Normalisation of 8-eigenvectors in RENORM',
      +                  ' crazy --  STOP.'
       STOP
-      ENDIF 
+      ENDIF
 
 
       DO 10 K=1,3
@@ -111,5 +111,5 @@ C     ELSE
 C     ENDIF
 10000 FORMAT(' (SUBR.RENORM) failed to identify eigenvectors as X, Y ',
      +'and Z.  KK=',3I2)
-      RETURN
+      STOP
       END
