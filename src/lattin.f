@@ -634,21 +634,21 @@ C        YY(NTY)=YY(NTY)*XX(NTY)/SIN(XX(NTY))
          TMAT(6,6,NTY)     = 1.D0
          ID(NTY) = 3
          ENDIF
-         NTY=NTY+1
-         CALL HEDGE(XX(NTY-1),YY(NTY-1),TMAT(1,1,NTY),NUNT(NTY-1),
-     +                               XX(NTY),X2(NTY),NSOL(NTY-1))
-         NAME(NTY)='EDGE'
-         SNAME(NTY)= '--------'
-         NUNT(NTY)=1
-         ID(NTY)=3
-         XX(NTY)=0.D0                        !Give zero strength to handle radiation.
-         X2(NTY)=0.D0
-         YY(NTY)=1.D-10                      !And give edge fields some length too.
-         IF(IEDGE.EQ.0)THEN            !Turn off edge focussing.
-           YY(NTY)=0.D0
-           XX(NTY)=0.D0
-           ID(NTY)=1
-         ENDIF
+C        NTY=NTY+1
+C        CALL HEDGE(XX(NTY-1),YY(NTY-1),TMAT(1,1,NTY),NUNT(NTY-1),
+C    +                               XX(NTY),X2(NTY),NSOL(NTY-1))
+C        NAME(NTY)='EDGE'
+C        SNAME(NTY)= '--------'
+C        NUNT(NTY)=1
+C        ID(NTY)=3
+C        XX(NTY)=0.D0                        !Give zero strength to handle radiation.
+C        X2(NTY)=0.D0
+C        YY(NTY)=1.D-15                      !And give edge fields some length too.
+C        IF(IEDGE.EQ.0)THEN            !Turn off edge focussing.
+C          YY(NTY)=0.D0
+C          XX(NTY)=0.D0
+C          ID(NTY)=1
+C        ENDIF
 C=======Q
           CASE(3)
 C=====NORMAL QUAD WITH SPECIAL TRICK FOR B-B SUBSTITUTE
@@ -726,22 +726,22 @@ C=======CFH
 C=====HORIZONTAL COMBINED FUNCTION DIPOLE
             CALL CFDIPH(XX(NTY),X2(NTY),YY(NTY),TMAT(1,1,NTY),0.D0)
 C=====Put in an edge field just as for hor dipoles.
-            NTY=NTY+1
-            XIN=XX(NTY-1)
-            CALL HEDGE((XIN),YY(NTY-1),TMAT(1,1,NTY),NUNT(NTY-1),
-     +                               XX(NTY),X2(NTY),NSOL(NTY-1))
-            NAME(NTY)='EDGE'
-            SNAME(NTY)= '--------'
-            NUNT(NTY)=1
-            ID(NTY)=3
-            XX(NTY)=0.D0                     !Give zero strength to handle radiation.
-            X2(NTY)=0.D0
-            YY(NTY)=1.D-10                   !And give edge fields some length too.
-            IF(IEDGE.EQ.0)THEN        ! Turn off edge focussing.
-            YY(NTY)=0.D0
-            XX(NTY)=0.D0
-            ID(NTY)=1
-            ENDIF
+C           NTY=NTY+1
+C           XIN=XX(NTY-1)
+C           CALL HEDGE((XIN),YY(NTY-1),TMAT(1,1,NTY),NUNT(NTY-1),
+C    +                               XX(NTY),X2(NTY),NSOL(NTY-1))
+C           NAME(NTY)='EDGE'
+C           SNAME(NTY)= '--------'
+C           NUNT(NTY)=1
+C           ID(NTY)=3
+C           XX(NTY)=0.D0                     !Give zero strength to handle radiation.
+C           X2(NTY)=0.D0
+C           YY(NTY)=1.D-10                   !And give edge fields some length too.
+C           IF(IEDGE.EQ.0)THEN        ! Turn off edge focussing.
+C           YY(NTY)=0.D0
+C           XX(NTY)=0.D0
+C           ID(NTY)=1
+C           ENDIF
 C=======CFV
           CASE(16)
 C=====VERTICAL COMBINED FUNCTION DIPOLE
@@ -754,7 +754,7 @@ C     circumference and energy.
 C=======EDGE FIELDS for SPRINT PROGRAMS
           CASE(97)
 C=====Edge focussing from input file. Redefine the type to 3.
-            XX(NTY) = dabs(XX(NTY))
+            XX(NTY) = XX(NTY)
 C           XX(NTY) = 0.d0
             TMAT(2,1,NTY) =  XX(NTY)  * 1.0D0     !Fanglei modified on May 28, 2020, horizontal is defocusing, vertical is focusing
             TMAT(4,3,NTY) = -XX(NTY)  * 1.0D0     !SY's book, page 66, exercise 2.2.2
@@ -762,7 +762,7 @@ C           XX(NTY) = 0.d0
             ID(NTY)=3                      !Change the type number from 97 to 3.
             XX(NTY)=0.D0                   !Give zero strength.
             X2(NTY)=0.D0
-C           YY(NTY)=1.D-10                 !Don't give edge fields zero length.
+            YY(NTY)=1.D-16                 !Don't give edge fields zero length.
 C           YY(NTY)=5.D-2                  !Give edge fields some length too.
 C=====SET UP A FIRST DRIFT OF ZERO LENGTH----THIS IS NOT THE I.P.!
 C=====THE I.P. WILL BE THE 3RD ELEMENT!---AFTER THIS DUMMY ELEMENT & THE
@@ -955,12 +955,12 @@ C=====    the second. Leave it for now: 26/12/03. Need a new flag in the NAMELIS
 C=====    a clean switch off instead of killing in HEDGE.
 C=====    ALSO SLOT IN A VERTICAL KICKER AT EVERY SECOND DIPOLE SLICE AFTER THE
 C=====    FIRST-- UP TO A TOTAL OF 4 KICKERS.
-          IF(IREM.EQ.2.OR.IREM.EQ.15)THEN
-            NELEM=NELEM+1
+C         IF(IREM.EQ.2.OR.IREM.EQ.15)THEN
+C           NELEM=NELEM+1
 C            LL=2
 C            WRITE(53,908)LL,TOTL,NELEM
-            ITYPE(NELEM)=IN+1
-          ENDIF
+C           ITYPE(NELEM)=IN+1
+C         ENDIF
           NKI=0
 C=====    =August 2003: Kill kicks inserted for twist.
           DO INU=1,NU
@@ -989,12 +989,12 @@ C  771       CALL RANNOR(GAUS1,GAUS2)
             TMAT(5,3,NTY)=-XX(NTY)
             TMAT(4,7,NTY)=-XX(NTY)
           ENDDO
-          IF(IREM.EQ.2.OR.IREM.EQ.15)THEN
-            NELEM=NELEM+1
+C         IF(IREM.EQ.2.OR.IREM.EQ.15)THEN
+C           NELEM=NELEM+1
 C            LL=4
 C            WRITE(53,908)LL,TOTL,NELEM
-            ITYPE(NELEM)=IN+1
-          ENDIF
+C           ITYPE(NELEM)=IN+1
+C         ENDIF
 
 C=====    RE-ANCHOR THE LATTICE ON THIS ELEMENT BEFORE PROCEEDING.
           TOTL=YY(IN)*NUS*0.5D0+PLT
@@ -1146,10 +1146,10 @@ C=====NUMBER OF MAGNETS AND LENGTH OF RING
       ICAV=0
       RLENGE=0.D0
       DO 69 I=1,NELEM
-      IF(I.LE.5000)THEN
+C     IF(I.LE.5000)THEN
         WRITE(53,60)I,NAME(ITYPE(I)),ID(ITYPE(I)),XX(ITYPE(I)),
      +           X2(ITYPE(I)),YY(ITYPE(I)),RADSCALE(ITYPE(I)),RLENGE
-      ENDIF
+C     ENDIF
 
 
       JID=ID(ITYPE(I))

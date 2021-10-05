@@ -287,13 +287,26 @@ C
 C
   258 CONTINUE
 
-C      WRITE(533,2581)NAME(ITY),S
-C 2581 FORMAT(///,' 8X8 TRANSF.MATRIX at ',  A8, F15.9, /)
-C     DO 2735 I=1,8
-C 2735 WRITE(533,925)(TM8A(I,J),J=1,8)
+      IF (
+     +  NAME(ITY)(1:3).ne."HQ_".and. 
+     +  NAME(ITY)(1:3).ne."VQ_".and. 
+     +  NAME(ITY)(1:3).ne."VD_".and. 
+     +  NAME(ITY)(1:3).ne."RQ_".and. 
+     +  NAME(ITY)(1:3).ne."CQ_".and. 
+     +  NAME(ITY)(1:3).ne."HC_".and. 
+     +  NAME(ITY)(1:3).ne."VC_") THEN
+
+      WRITE(533,2581) NAME(ITY),S
+ 2581 FORMAT(///,  A8, F15.9, /)
+      DO 2735 I=1,8
+ 2735 WRITE(533,925)(TM8A(I,J),J=1,8)
+      ENDIF
 
 C      CALL JAM888(TREV8,TM8A,TREV8)
       TREV8 = MATMUL(TM8A,TREV8)
+C      WRITE(533,2581) "ACUMULAT",S
+C      DO 2736 I=1,8
+C 2736 WRITE(533,925)(TREV8(I,J),J=1,8)
 
  2588 CONTINUE
 
@@ -308,14 +321,14 @@ C    +                (ZW(J,1),J=1,3),(ZW(J,2),J=1,3),(ZW(J,3),J=1,3),II
                                      WRITE(55,930)S,NAME(ITY),IID,
      +                (ZW(J,1),J=1,3),(ZW(J,2),J=1,3),(ZW(J,3),J=1,3),II
       ENDIF
-      IF(NAME(ITY).EQ.'IP6'.or.NAME(ITY).EQ.'IP12')THEN
-      WRITE(53,9277)S
-      WRITE(533,9277)S
- 9277 FORMAT(///,' 8X8 TRANSF.MATRIX at',  F10.4, /)
-      DO 2733 I=1,8
-      WRITE(533,925)(TREV8(I,J),J=1,8)
- 2733 WRITE(53,925)(TREV8(I,J),J=1,8)
-      ENDIF
+C      IF(NAME(ITY).EQ.'IP6'.or.NAME(ITY).EQ.'IP12')THEN
+C      WRITE(53,9277)S
+C      WRITE(533,9277)S
+C 9277 FORMAT(///,' 8X8 TRANSF.MATRIX at',  F10.4, /)
+C      DO 2733 I=1,8
+C      WRITE(533,925)(TREV8(I,J),J=1,8)
+C 2733 WRITE(53,925)(TREV8(I,J),J=1,8)
+C      ENDIF
 
 C     WRITE(534,9278)NAME(ITY),S
 C 9278 FORMAT(///,' 8X8 TRANSF.MATRIX at   ',  A8,  F15.9, /)
@@ -1309,9 +1322,9 @@ C
      +                       9X,'DMX',7X,'DMY',7X,'DMZ',7X,'DDM',
      +                      11X,'DLX',7X,'DLY',7X,'DLZ',7X,'DDL'/)
 C
-  930 FORMAT(1X,F9.2,1X,A8,1X,I8,3F9.5,10X,3F9.5,10X,3F9.5,I8)
-  990 FORMAT(A1,A9,1X,A8,1X,A8,3A9,10X,3A9,10X,3A9,A8)
-  991 FORMAT(A1,I9,1X,I8,1X,I8,3I9,10X,3I9,10X,3I9,I8)
+  930 FORMAT(1X,F9.2,1X,A8,1X,I8,3F14.8,3F14.8,3F14.8,I8)
+  990 FORMAT(A1,A9,1X,A8,1X,A8,3A14,3A14,3A14,A8)
+  991 FORMAT(A1,I9,1X,I8,1X,I8,3I14,3I14,3I14,I8)
 C
 C
   937 FORMAT(' ',F6.1, 1X,A8,1X,I2, 3F8.4, 4X,4F10.4,4X,4F10.4)
