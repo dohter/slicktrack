@@ -28,6 +28,7 @@ C     DO 1 J=1,6
 C     DO 1 K=1,6
 C   1 A(J,K)=T(J,K)
 
+      AP1 = 1.159652D-3 + 1.0D0
 
       A(1:6,1:6) = T(1:6,1:6)
       A(7:8,1:8) = 0.D0
@@ -115,18 +116,30 @@ C=====NEED HALF THE EFFECT AT FRONT AND BACK: CORRECTED 8/10/86.
       AGP1=(1.D0+S)
       FAC=1.0D0
 C      WRITE(53,331)LZI,MZI
-C  331 FORMAT(' ','lz,mz:  ',2F10.6) 
-      IF(NNSOL.EQ.1)RETURN
+C  331 FORMAT(' ','lz,mz:  ',2F10.6)
 C     IF(NNSOL.EQ.1)FAC=0.9
+C     IF(NNSOL.NE.2)RETURN
       A(7,1)= AGP1* A(2,1)      *LZM*FAC
       A(8,1)=-AGP1* A(2,1)      *MZM*FAC
       A(7,2)= AGP1*(A(2,2)-1.D0)*LZM*FAC
       A(8,2)=-AGP1*(A(2,2)-1.D0)*MZM*FAC
-C     IF(NNSOL.NE.2)RETURN
       A(7,3)=-AGP1* A(4,3)      *LXM           *1.D0
       A(8,3)= AGP1* A(4,3)      *MXM           *1.D0
       A(7,4)=-AGP1*(A(4,4)-1.D0)*LXM           *1.D0
       A(8,4)= AGP1*(A(4,4)-1.D0)*MXM           *1.D0
+      IF(NNSOL.EQ.999)THEN  ! HORIZONTAL EDGE FIELD
+C       WRITE(*,*) X2, XX, A(2,1), AP1, LZM
+        A(7,3)=-AGP1* A(4,3)*LXM + AP1*X2*LSM
+        A(8,3)= AGP1* A(4,3)*MXM - AP1*X2*MSM
+C       WRITE(*,*) "THIS IS THE EDGE"
+      ELSEIF(NNSOL.EQ.998)THEN  ! VERTICAL EDGE FIELD
+C       WRITE(*,*) X2, XX, A(2,1), AP1, LZM
+        A(7,1)= AGP1* A(2,1)*LZM - AP1*X2*LSM
+        A(8,1)=-AGP1* A(2,1)*MZM + AP1*X2*MSM
+C       WRITE(*,*) "THIS IS THE EDGE"
+      ELSE  ! REGULAR QUADRUPOLE
+C     WRITE(*,*) "THIS IS THE QUAD"
+      ENDIF
 C 9278 WRITE(53,'(A,1X,I5,F16.6)')' In MX88 8X8 TRANSF.MATRIX at',ID,YY
 C      DO 274 III=1,8
 C  274 WRITE(53,926)(A(III,JJJ),JJJ=1,8)
@@ -152,7 +165,7 @@ C     IF(NNSOL.EQ.1)GO TO 2273
       A(8,4)=-AGP1*(A(2,4)*MZM-(A(2,2)-1.D0)*MXM)
 C2273 DO 273 III=1,8
 C 273 WRITE(53,925)(A(III,JJJ),JJJ=1,6)
-C 925 FORMAT(' ','Skew Quad  ',6D16.8) 
+C 925 FORMAT(' ','Skew Quad  ',6D16.8)
       RETURN
 C
 C=====CAVITIES
@@ -320,13 +333,13 @@ C=====G<0
       RETURN
 
 C====BEAM-BEAM
-   22 CONTINUE   
+   22 CONTINUE
       AGP1=(1.D0+S)
       IF(NNSOL.EQ.1)RETURN
       A(7,1)= AGP1* A(2,1)      *LZM
       A(8,1)=-AGP1* A(2,1)      *MZM
-      A(7,3)=-AGP1* A(4,3)      *LXM     
-      A(8,3)= AGP1* A(4,3)      *MXM     
+      A(7,3)=-AGP1* A(4,3)      *LXM
+      A(8,3)= AGP1* A(4,3)      *MXM
 C
 C
       END

@@ -236,9 +236,9 @@ C    *************** Fanglei uncomments on 12May20 ********
      +              "TAUBKS","TAUD0","TAUDX","TAUDY","TAUDS",
      +              "TAUTOT"
       WRITE(54,9468)"#",[(I, I=1,14)]
-     +              
-     +             
-     +            
+     +
+     +
+     +
 9467  FORMAT(' ',(A1,A14,3X,13(A15,3X)))
 9468  FORMAT(' ',(A1,I14,3X,13(I15,3X)))
       OPEN(55,FILE=AZIFUNCS,     STATUS='UNKNOWN')
@@ -411,7 +411,8 @@ C
 C
    55 CONTINUE
 
-      U0=U0KEEP
+      IF(IRAD.eq.0) U0=U0KEEP   ! Oleksii NOW U0 is updated only if
+C                                 IRAD=0
 C
 C
 C      IF(ISECT.NE.0)GO TO 12345

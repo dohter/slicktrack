@@ -49,7 +49,7 @@ C      write(*,'(A,I10)')' NELEM=',II
       ITY=ITYPE(II)
       IID=ID(ITY)
       IF(ID(ITY).EQ.1.AND.XX(ITY).LT.1.D-10)GO TO 26 !Skip zero length drifts
-      NTW=NTWIST(ITY)                                !Sept 2003. 
+      NTW=NTWIST(ITY)                                !Sept 2003.
       IF(ID(ITY).NE.5.AND.ID(ITY).NE.6.AND.ID(ITY).NE.7.AND.
      + NAME(ITY)(1:2).NE.'CQ'.AND.NAME(ITY)(1:2).NE.'RQ'.AND.IID.NE.17)
      +                                                      S=S+YY(ITY)
@@ -111,7 +111,7 @@ c              to make it more transparent.
       IF(IERRO .NE. 0) STOP
 C
 C
-C======Initialise statistical info. 
+C======Initialise statistical info.
       DX(1) =VC6B(1)               ! Why are these DX(1) etc needed?
       DY(1) =VC6B(3)
       DXP(1)=VC6B(2)
@@ -122,7 +122,7 @@ C======Initialise statistical info.
       DXMAX= DABS(VC6B(1))
       DYMAX= DABS(VC6B(3))
       DSMAX= DABS(VC6B(5))
-      DENMAX=DEN    
+      DENMAX=DEN
       DXRMS   = 0.D0
       DYRMS   = 0.D0
       DXVQRMS = 0.D0
@@ -136,7 +136,7 @@ C======Initialise statistical info.
       DYBEND= 0
       DYABS = 0
       NQUADS   = 0
-      NQUADSVQ = 0 
+      NQUADSVQ = 0
       NQUADSVC = 0
 C
 C
@@ -156,7 +156,7 @@ C      IF(II.EQ.29.AND.ID(ITYPE(II)).EQ.7)TMAT(4,7,ITYPE(II)) = 0.D0
 
       JTY=ITYPE(II-1)
       IID=ID(JTY)
-C=====IF(ID(JTY).EQ.1.AND.XX(JTY).LT.1.D-10)GO TO 52    !Skip zero length drifts 
+C=====IF(ID(JTY).EQ.1.AND.XX(JTY).LT.1.D-10)GO TO 52    !Skip zero length drifts
       IF(ID(JTY).NE.5.AND.ID(JTY).NE.6.AND.ID(JTY).NE.7.AND.
      + NAME(JTY)(1:2).NE.'CQ'.AND.NAME(JTY)(1:2).NE.'RQ'.AND.IID.NE.17)
      +                                                 S=S+YY(JTY)
@@ -164,7 +164,7 @@ C=====IF(ID(JTY).EQ.1.AND.XX(JTY).LT.1.D-10)GO TO 52    !Skip zero length drifts
 C      CALL UCOPY(TMAT(1,1,JTY),TEMP,98)
       TEMP =  TMAT(1:7,1:7,JTY)
       IF(IID.EQ.6.OR.IID.EQ.7)THEN          !03/04:Kill generation of dispersion.
-      TEMP(5,1)=0.D0                        !That is only needed for 6x6 wrt C.O.  
+      TEMP(5,1)=0.D0                        !That is only needed for 6x6 wrt C.O.
       TEMP(5,3)=0.D0
       TEMP(2,6)=0.D0
       TEMP(4,6)=0.D0
@@ -195,16 +195,16 @@ C  60 CALL SOLXYP(II-1,XX(JTY)/YY(JTY),DXPA,DYPA)
 C     IF(IRAD.NE.0)
 C    +          TEMP(6,7)=-CRAD*XX(JTY)**2*(DXPA*DXPA+DYPA*DYPA)/YY(JTY)
 
-   51 CONTINUE 
+   51 CONTINUE
       ENDIF
 
-C======Get the C.O. at the end of element II-1, i.e. at the entrance to element II. 
+C======Get the C.O. at the end of element II-1, i.e. at the entrance to element II.
       DO 210 I=1,6
       VC6A(I)=TEMP(I,7)
       DO 210 J=1,6
   210 VC6A(I)=VC6A(I)+TEMP(I,J)*VC6B(J)
 
-   52 CONTINUE 
+   52 CONTINUE
       DO 211 I=1,6
   211 VC6B(I)=VC6A(I)
       DX(II) =VC6B(1)
@@ -233,35 +233,36 @@ C
       IF(IID.EQ.5)U0=U0+XX(JTY)*E0*VC6B(5)
       IF(ID(ITYPE(II)).EQ.3.AND.
      + NAME(ITYPE(II)).NE.'EDGE'.AND.NAME(ITYPE(II))(1:2).NE.'CQ')THEN
-      DXRMS  = DXRMS+VC6B(1)**2   
-      DYRMS  = DYRMS+VC6B(3)**2   
-      DSRMS  = DSRMS+VC6B(5)**2   
-      DENRMS = DENRMS+DEN**2     
-      DYPRMS = DYPRMS+VC6B(4)**2 
+      DXRMS  = DXRMS+VC6B(1)**2
+      DYRMS  = DYRMS+VC6B(3)**2
+      DSRMS  = DSRMS+VC6B(5)**2
+      DENRMS = DENRMS+DEN**2
+      DYPRMS = DYPRMS+VC6B(4)**2
       DYABS  = DYABS+DABS(VC6B(3))
       NQUADS = NQUADS + 1
       ENDIF
       IF(ID(ITYPE(II)).EQ.7.AND.NAME(ITYPE(II))(1:2).EQ.'VQ')THEN
-      DXVQRMS  = DXVQRMS+VC6B(1)**2   
-      DYVQRMS  = DYVQRMS+VC6B(3)**2   
+      DXVQRMS  = DXVQRMS+VC6B(1)**2
+      DYVQRMS  = DYVQRMS+VC6B(3)**2
       NQUADSVQ = NQUADSVQ + 1
       ENDIF
       IF(ID(ITYPE(II)).EQ.7.AND.NAME(ITYPE(II))(1:2).EQ.'VC')THEN
-      DXVCRMS  = DXVCRMS+VC6B(1)**2   
-      DYVCRMS  = DYVCRMS+VC6B(3)**2   
+      DXVCRMS  = DXVCRMS+VC6B(1)**2
+      DYVCRMS  = DYVCRMS+VC6B(3)**2
       NQUADSVC = NQUADSVC + 1
       ENDIF
 
       IF(IID.EQ.2.OR.IID.EQ.15)THEN
       IBEND=IBEND+1
-      DYBEND=DYBEND+VC6B(3)**2 
+      DYBEND=DYBEND+VC6B(3)**2
       ENDIF
 C
-      IF(IE0.EQ. 1.AND.ICLBP.NE.0.AND.ITORB.EQ.NITER.AND.(NAME(JTY).EQ.
-     +'IP'.OR.IID.EQ.7.OR.IID.EQ.6.OR.NAME(JTY).EQ.'PU'.OR.
-     +NAME(JTY)(1:2).EQ.'HC'.OR.NAME(JTY)(1:2).EQ.'VC'.OR.
-     +NAME(JTY)(1:2).EQ.'HQ'.OR.NAME(JTY)(1:2).EQ.'VQ').AND.NAME(JTY)
-     +.NE.'VKICK')
+C     IF(IE0.EQ. 1.AND.ICLBP.NE.0.AND.ITORB.EQ.NITER.AND.(NAME(JTY).EQ.
+C    +'IP'.OR.IID.EQ.7.OR.IID.EQ.6.OR.NAME(JTY).EQ.'PU'.OR.
+C    +NAME(JTY)(1:2).EQ.'HC'.OR.NAME(JTY)(1:2).EQ.'VC'.OR.
+C    +NAME(JTY)(1:2).EQ.'HQ'.OR.NAME(JTY)(1:2).EQ.'VQ').AND.NAME(JTY)
+C    +.NE.'VKICK')
+      IF(IE0.EQ. 1.AND.ICLBP.NE.0.AND.ITORB.EQ.NITER)
      +               WRITE(53,98)II,S,NAME(JTY),VC6B*1.D3,DEN,NAME(JTY)
 C
    98 FORMAT(1X,I6,1X,F10.4,1X,A8,2X,7F10.4,2X,A8)
@@ -354,7 +355,7 @@ C
      +            DYABS   *1.D3,
      +            DYBEND  *1.D6,
      +            NQUADS       ,
-     +            NQUADSVQ     ,   
+     +            NQUADSVQ     ,
      +            NQUADSVC
 C
 C

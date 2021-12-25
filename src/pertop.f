@@ -39,7 +39,7 @@ C
       PI=3.1415926535897932D0
       PI2=2.D0*PI
 C
-C      
+C
 C
       IT=ITYPE(1)
       DO 10 I=1,6
@@ -61,11 +61,12 @@ C   45 WRITE(53,'(I10,3X,A8,6F12.5)')II,NAME(ITY),(TM6(I,J),J=1,6)
       CALL JAM666(TREV66,TM6,TREV66)      ! betas in uncoupled regions.
 
 
-      IF(II.EQ.NELEM)THEN 
-CCC      WRITE(53,913)
-CCC      DO 55 I=1,6
-CCC   55 WRITE(53,'(I10,3X,A8,6F12.5)')II,NAME(ITY),(TREV6(I,J),J=1,6)
-      ENDIF 
+      IF(II.EQ.NELEM)THEN
+         WRITE(53,913)
+         DO 55 I=1,6
+          WRITE(53,'(I10,3X,A8,6F12.5)')II,NAME(ITY),(TREV6(I,J),J=1,6)
+  55    CONTINUE
+      ENDIF
 
 C      IF(II.EQ.1700)STOP
 
@@ -74,7 +75,7 @@ C      IF(II.EQ.1700)STOP
 C      IF(1.EQ.1)STOP
 
 C      CALL UCOPY(TREV6,TM6B,72)
-      TM6B = TREV6    
+      TM6B = TREV6
 
 C      IF(1.EQ.1)STOP
 
@@ -113,7 +114,7 @@ C9266 FORMAT(' ','NOW THE F02AGF RESULTS: 8X8')
       WR(I)  =RR6(I)
  2844 WI(I)  =RI6(I)
 C      CALL UCOPY(ZZ,TM6A,72)
-      TM6A = ZZ 
+      TM6A = ZZ
 C      CALL UCOPY(ZZNC,TM6NCA,72)
       TM6NCA = ZZNC
 C
@@ -190,15 +191,15 @@ C=====                                    I.E. AT START OF ELEMENT II
       JTY=ITYPE(II-1)
       IID=ID(JTY)
       IF(IID.EQ.5.OR.IID.EQ.6.OR.IID.EQ.7.OR.IID.EQ.17)GO TO 699
-      IF( (NAME(JTY)(1:2).EQ.'CQ'.AND.IID.EQ.3) !Ignore artificial lengths. 
-     +     .OR.(NAME(JTY)(1:2).EQ.'RQ'.AND.IID.EQ.4))GO TO 699 
+      IF( (NAME(JTY)(1:2).EQ.'CQ'.AND.IID.EQ.3) !Ignore artificial lengths.
+     +     .OR.(NAME(JTY)(1:2).EQ.'RQ'.AND.IID.EQ.4))GO TO 699
        S=S+YY(JTY)
-  699 CONTINUE  
+  699 CONTINUE
 
       CALL MX66(TMAT(1,1,JTY),JTY,IID,II-1,XX(JTY),X2(JTY),YY(JTY),TM6)
       IF(IID.EQ.5)GO TO 574
       CALL JAM666(TM6NCA,TM6,TM6NCA)    !propagate the eigenvectors to get the
-                                        !betas even with coupling. 
+                                        !betas even with coupling.
       BETACX(II) = 2.D0*     (TM6NCA(1,1)**2 + 1.D0*TM6NCA(1,2)**2)
       BETACY(II) = 2.D0*     (TM6NCA(3,3)**2 + 1.D0*TM6NCA(3,4)**2)
       DO 566 I=1,4
@@ -212,7 +213,7 @@ C=====                                    I.E. AT START OF ELEMENT II
       IF(DABS(VC4B(3)).GT.EYMAX)SMAXY=S
       IF(DABS(VC4B(3)).GT.EYMAX)EYMAX=DABS(VC4B(3))
 C  574 IF(IE0.EQ.1.AND.IDISP.EQ.1.AND.(S.LT. 250..OR.S.GT.6000.)  ! 27/8/03
-  574 IF(IE0.EQ.1.AND.IDISP.EQ.1                               
+  574 IF(IE0.EQ.1.AND.IDISP.EQ.1
      +.AND.NAME(JTY).NE.'DRIFT')WRITE(53,911)NAME(JTY),S,VC4B,
      +                                            BETACX(II), BETACY(II)
   911 FORMAT(4X,A8,T16,7F11.5)
@@ -252,7 +253,7 @@ C     TUN(I)=DACOS(WR(I))/PI2
 C=====TEST FOR SYMPLECTICITY
       CALL SYMP6(TM6B)
 
-C======2/2004: Kill writing this: the normalisation in RENORM goes crazy and it's of no 
+C======2/2004: Kill writing this: the normalisation in RENORM goes crazy and it's of no
 C      real interest as far as I can see right now.
 C      WRITE(53,9155)
 C      DO 388 I=1,6
@@ -353,7 +354,7 @@ C
      +   T22,'ETAYMAX =',F10.4,' M.    AT',F10.4,' M.',
      +   /,' RMS DISP.FUNCTIONS: ETAXRMS =',
      +    F10.4,' M.',/,T22,'ETAYRMS =',F10.4,' M.')
-  910 FORMAT(1H1,1X,'PERTURBED DISPERSION FUNCTIONS AND APPROX. BETAS AT 
+  910 FORMAT(1H1,1X,'PERTURBED DISPERSION FUNCTIONS AND APPROX. BETAS AT
      + END OF ELEMENT:'
      +                                               ,///,3X,' NAME--'
      +    ,T20,'POS--',T31,'ETAX--',T42,'ETAXP--',T53,
@@ -362,7 +363,7 @@ C
   912 FORMAT(1H1,' PERTURBED MACHINE PARAMETERS:',/,T6,'MOM.COMP.',
      >    'FACTOR =',F13.6,/,T5,'SYN.RAD.LOSS =',F13.6,'  MEV')
   913 FORMAT(///,' PERTURBED TOTAL TRANSF. AROUND THE 1-ST ELEMENT')
- 9133 FORMAT(///,' PERTURBED TOTAL TRANSF. AROUND THE 1-ST ELEMENT', 
+ 9133 FORMAT(///,' PERTURBED TOTAL TRANSF. AROUND THE 1-ST ELEMENT',
      +             '--WITHOUT CAVITIES')
 
 

@@ -133,7 +133,7 @@ C
       character(100) str
       integer i, ix
 
-
+      INTEGER END_COUNT ! FIX OF BMAD PRODUCING TWO END ELEMENTS
 
 C===========Initialization for NAG library G05KFF=================
       INTEGER      NNAG
@@ -556,7 +556,7 @@ C
       NTY=1
 C=====LOOP TO READ THE MAGNET PARAMETERS & CHECK FOR COMMENTS.
       WRITE(53,952)
-
+      END_COUNT = 0
       DO WHILE(.true.)
         READ(52,'(A)')STR
 C       write(*,*) STR
@@ -570,7 +570,11 @@ C       write(*,*) STR
         read (str(1:ix), *) ID(NTY)
         call string_trim(str(ix+1:), str, ix)
         NAME(NTY) = str(1:ix)
-        IF(NAME(NTY).EQ.'END') EXIT
+        IF(NAME(NTY).EQ.'END'.and.END_COUNT==1) EXIT
+        IF(NAME(NTY).EQ.'END'.and.END_COUNT==0) THEN
+          END_COUNT = END_COUNT+1
+          CYCLE
+        ENDIF
         call string_trim(str(ix+1:), str, ix)
         read (str(1:ix), *) XX(NTY)
         call string_trim(str(ix+1:), str, ix)
@@ -667,7 +671,8 @@ C=====NORMAL QUAD WITH SPECIAL TRICK FOR B-B SUBSTITUTE
 C=======QK
           CASE(4)
 C=====SKEW QUAD
-            CALL SKEWQUAD(XX(NTY),YY(NTY),IKICK,NTY,TMAT(1,1,NTY),0.D0)
+            CALL SKEWQUAD(XX(NTY),YY(NTY),IKICK,
+     +        NTY,TMAT(1,1,NTY),X2(NTY))
 C=======RF
           CASE(5)
 C=====CAVITY
@@ -754,15 +759,31 @@ C     circumference and energy.
 C=======EDGE FIELDS for SPRINT PROGRAMS
           CASE(97)
 C=====Edge focussing from input file. Redefine the type to 3.
-            XX(NTY) = XX(NTY)
+C           XX(NTY) = XX(NTY)
 C           XX(NTY) = 0.d0
             TMAT(2,1,NTY) =  XX(NTY)  * 1.0D0     !Fanglei modified on May 28, 2020, horizontal is defocusing, vertical is focusing
             TMAT(4,3,NTY) = -XX(NTY)  * 1.0D0     !SY's book, page 66, exercise 2.2.2
 
             ID(NTY)=3                      !Change the type number from 97 to 3.
             XX(NTY)=0.D0                   !Give zero strength.
-            X2(NTY)=0.D0
             YY(NTY)=1.D-16                 !Don't give edge fields zero length.
+            NSOL(NTY) = 999                ! MARK AS EDGE FIELD
+C           YY(NTY)=5.D-2                  !Give edge fields some length too.
+C=====SET UP A FIRST DRIFT OF ZERO LENGTH----THIS IS NOT THE I.P.!
+C=====THE I.P. WILL BE THE 3RD ELEMENT!---AFTER THIS DUMMY ELEMENT & THE
+C=====FOLLOWING ZERO LENGTH DRIFT.
+C=======EDGE FIELDS for SPRINT PROGRAMS
+          CASE(98)
+C=====Edge focussing from input file. Redefine the type to 3.
+C           XX(NTY) = XX(NTY)
+C           XX(NTY) = 0.d0
+            TMAT(2,1,NTY) = -XX(NTY)  * 1.0D0
+            TMAT(4,3,NTY) =  XX(NTY)  * 1.0D0
+
+            ID(NTY)=3                      !Change the type number from 97 to 3.
+            XX(NTY)=0.D0                   !Give zero strength.
+            YY(NTY)=1.D-16                 !Don't give edge fields zero length.
+            NSOL(NTY) = 998                ! MARK AS EDGE FIELD
 C           YY(NTY)=5.D-2                  !Give edge fields some length too.
 C=====SET UP A FIRST DRIFT OF ZERO LENGTH----THIS IS NOT THE I.P.!
 C=====THE I.P. WILL BE THE 3RD ELEMENT!---AFTER THIS DUMMY ELEMENT & THE

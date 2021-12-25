@@ -1,5 +1,5 @@
 C   06/05/84 201221453  MEMBER NAME  SKEWQD   (N3000.S)     FORTRAN
-      SUBROUTINE SKEWQUAD(X,YY,IKICK,NTY,T,ECHROM)
+      SUBROUTINE SKEWQUAD(X,YY,IKICK,NTY,T,TILT)
 C
 C
 C
@@ -13,13 +13,12 @@ C
 
       REAL*8 T(7,7),T1(7,7),T2(7,7)
 C
-C=====SET AS A UNIT MATRIX TO BEGIN and on subsequent entries so that 
+C=====SET AS A UNIT MATRIX TO BEGIN and on subsequent entries so that
 C     the method of construction doesn't make a mess.
       CALL UNIT(7,T)
 C
       IF(YY.EQ.0.D0)RETURN
 C=====REDEFINE THE STRENGTH 'X'
-      X=X/(1.D0+ECHROM)
       XX=X/YY
 C=====INITIALISE MATRICES
       T(1,2)=YY
@@ -31,21 +30,24 @@ C
 C=====INITIALISE MATRICES
       DO 2 J=1,7
       DO 2 K=1,7
-      T1(J,K)=0.D0
-      T2(J,K)=0.D0
+        T1(J,K)=0.D0
+        T2(J,K)=0.D0
     2 CONTINUE
+
+      CTILT = DCOS(TILT)
+      STILT = DSIN(TILT)
       DO 3 J=1,7
-      T1(J,J)= 1.D0
-      T2(J,J)= 1.D0
+        T1(J,J)= CTILT
+        T2(J,J)= CTILT
     3 CONTINUE
-      T1(1,3)= 1.D0
-      T1(2,4)= 1.D0
-      T1(3,1)=-1.D0
-      T1(4,2)=-1.D0
-      T2(1,3)=-1.D0
-      T2(2,4)=-1.D0
-      T2(3,1)= 1.D0
-      T2(4,2)= 1.D0
+      T1(1,3)= STILT
+      T1(2,4)= STILT
+      T1(3,1)=-STILT
+      T1(4,2)=-STILT
+      T2(1,3)=-STILT
+      T2(2,4)=-STILT
+      T2(3,1)= STILT
+      T2(4,2)= STILT
 C
 C
 C
@@ -69,14 +71,6 @@ C=====CONSTRUCT A THICK SKEW-QUAD BY ROTATING A NORMAL QUAD.
       T(3,4)= FQ2*DS/RXX + FQ1*DSH/RXX
       T(4,3)=-FQ2*DS*RXX + FQ1*DSH*RXX
 C
-      T(1,1)= T(1,1)*0.5D0
-      T(2,2)= T(2,2)*0.5D0
-      T(1,2)= T(1,2)*0.5D0
-      T(2,1)= T(2,1)*0.5D0
-      T(3,3)= T(3,3)*0.5D0
-      T(4,4)= T(4,4)*0.5D0
-      T(3,4)= T(3,4)*0.5D0
-      T(4,3)= T(4,3)*0.5D0
       CALL JAM777(T,T,T1)
       CALL JAM777(T,T2,T)
 C
