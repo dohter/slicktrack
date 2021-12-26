@@ -610,6 +610,11 @@ C=====AS THE PETROS FILE WAS READ AND CONVERTED.
 C
 C=====SET UP 6X6 TRANSFER MATRICES.
         J=ID(NTY)
+
+        IF(J.eq.4.and.X2(NTY).lt.1.D-16) THEN
+          ID(NTY) = 3
+          J = 3
+        ENDIF
         SELECT CASE(J)
           CASE(99)
 C           DO NOTHING
