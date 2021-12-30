@@ -611,7 +611,9 @@ C
 C=====SET UP 6X6 TRANSFER MATRICES.
         J=ID(NTY)
 
-        IF(J.eq.4.and.X2(NTY).lt.1.D-16) THEN
+C       WRITE(*,*) X2(NTY), J
+        IF((J.EQ.4).and.(X2(NTY))<1.0D-14.and.(NAME(NTY)(1:2).ne.'RQ'))
+     +  THEN
           ID(NTY) = 3
           J = 3
         ENDIF

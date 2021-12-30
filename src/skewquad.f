@@ -11,15 +11,26 @@ C
 C
       INCLUDE "csol.for"
 
-      REAL*8 T(7,7),T1(7,7),T2(7,7)
+      REAL*8 T(7,7),T1(7,7),T2(7,7),T3(7,7)
 C
 C=====SET AS A UNIT MATRIX TO BEGIN and on subsequent entries so that
 C     the method of construction doesn't make a mess.
       CALL UNIT(7,T)
 C
       IF(YY.EQ.0.D0)RETURN
+
 C=====REDEFINE THE STRENGTH 'X'
+
       XX=X/YY
+C=====INITIALISE MATRICES
+      DO J=1,7
+      DO K=1,7
+        T1(J,K)=0.D0
+        T2(J,K)=0.D0
+        T3(J,K)=0.D0
+        T(J,K)=0.D0
+      ENDDO
+      ENDDO
 C=====INITIALISE MATRICES
       T(1,2)=YY
       T(3,4)=YY
@@ -27,12 +38,6 @@ C=====INITIALISE MATRICES
 C
 C
 C
-C=====INITIALISE MATRICES
-      DO 2 J=1,7
-      DO 2 K=1,7
-        T1(J,K)=0.D0
-        T2(J,K)=0.D0
-    2 CONTINUE
 
       CTILT = DCOS(TILT)
       STILT = DSIN(TILT)
@@ -62,18 +67,16 @@ C=====CONSTRUCT A THICK SKEW-QUAD BY ROTATING A NORMAL QUAD.
       DS=DSIN(ARG)
       DCH=DCOSH(ARG)
       DSH=DSINH(ARG)
-      T(1,1)= FQ1*DC     + FQ2*DCH
-      T(2,2)= FQ1*DC     + FQ2*DCH
-      T(1,2)= FQ1*DS/RXX + FQ2*DSH/RXX
-      T(2,1)=-FQ1*DS*RXX + FQ2*DSH*RXX
-      T(3,3)= FQ2*DC     + FQ1*DCH
-      T(4,4)= FQ2*DC     + FQ1*DCH
-      T(3,4)= FQ2*DS/RXX + FQ1*DSH/RXX
-      T(4,3)=-FQ2*DS*RXX + FQ1*DSH*RXX
+      T3(1,1)= FQ1*DC     + FQ2*DCH
+      T3(2,2)= FQ1*DC     + FQ2*DCH
+      T3(1,2)= FQ1*DS/RXX + FQ2*DSH/RXX
+      T3(2,1)=-FQ1*DS*RXX + FQ2*DSH*RXX
+      T3(3,3)= FQ2*DC     + FQ1*DCH
+      T3(4,4)= FQ2*DC     + FQ1*DCH
+      T3(3,4)= FQ2*DS/RXX + FQ1*DSH/RXX
+      T3(4,3)=-FQ2*DS*RXX + FQ1*DSH*RXX
 C
-      CALL JAM777(T,T,T1)
-      CALL JAM777(T,T2,T)
-C
+      T = MATMUL(MATMUL(T2,T3),T1)
 C
 C     DO 273 I=1,7
 C 273 WRITE(53,925)(T(I,J),J=1,7)
