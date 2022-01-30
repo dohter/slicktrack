@@ -121,8 +121,11 @@ C     IF(NNSOL.EQ.1)FAC=0.9
 C     IF(NNSOL.NE.2)RETURN
       A(7,1)= AGP1* A(2,1)      *LZM*FAC
       A(8,1)=-AGP1* A(2,1)      *MZM*FAC
+
+
       A(7,2)= AGP1*(A(2,2)-1.D0)*LZM*FAC
       A(8,2)=-AGP1*(A(2,2)-1.D0)*MZM*FAC
+
       A(7,3)=-AGP1* A(4,3)      *LXM           *1.D0
       A(8,3)= AGP1* A(4,3)      *MXM           *1.D0
       A(7,4)=-AGP1*(A(4,4)-1.D0)*LXM           *1.D0

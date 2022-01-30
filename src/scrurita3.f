@@ -1384,7 +1384,7 @@ C    All orbital modes together.
 C    If want to turn off the synchrotron side-band effect, RB(2) =  0.5D0*SPINKICKA(3,IQQ) *(0.D0)
       RB(0) =  1.0D0
       RB(1) =  0.5D0*SPINKICKA(1,IQQ)
-      RB(2) =  0.5D0*SPINKICKA(3,IQQ) *(1.D0) ! sync sbr on/off
+      RB(2) =  0.5D0*SPINKICKA(3,IQQ) *(0.D0) ! sync sbr on/off
       RB(3) = -0.5D0*SPINKICKA(2,IQQ)
 
 C    Check the size of kicks. Search for the largest on the last turn

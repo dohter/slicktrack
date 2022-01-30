@@ -5,12 +5,12 @@ C   15/11/79 401171758  MEMBER NAME  MX88     (MAY92.S)     FORTRAN
 
 
 C=====GENERATE THE THICK LENS 9X9 MATRIX USING THE n0,m,l SPIN BASIS.
-C     The bottom 3 rows are the normal G(2x6) matrix augmented 
-C     with an extra row for needed to get higher order resonances 
+C     The bottom 3 rows are the normal G(2x6) matrix augmented
+C     with an extra row for needed to get higher order resonances
 C     with M-C tracking.
-C     Since n0 obeys the T-BMT just in the same way as m and l  
+C     Since n0 obeys the T-BMT just in the same way as m and l
 C     the 9th row trivially mirrors the 7th and 8th rows.
-C     No need to be careful with the sign of row 9. Just know what it is! 
+C     No need to be careful with the sign of row 9. Just know what it is!
 C     Choose the sign to be the same as for l.
 C     The signs of rows 7 and 8 are(!) important for the G matrix.
 C=====PICK UP SYMPLECTIC MATRICES FROM TMAT. INCLUDE DAMPING AFTER EACH ELEMENT.
@@ -23,11 +23,13 @@ C
       CHARACTER *8 NM
 C
 C
-      INCLUDE "cnlist.for" 
+      INCLUDE "cnlist.for"
       INCLUDE "csol.for"
       INCLUDE "cloorb.for"
 C
 C
+      AP1 = 1.159652D-3 + 1.0D0
+
       A(7:9,1:9) = 0.D0
       A(1:6,7:9) = 0.D0
       A(7,7)=1.D0
@@ -77,10 +79,10 @@ C
 C
 C=====HORIZONTAL DIPOLES
    12 CONTINUE
-      A(1,6)= A(1,6)    
-      A(2,6)= A(2,6)    
-      A(5,1)= A(5,1)    
-      A(5,2)= A(5,2)    
+      A(1,6)= A(1,6)
+      A(2,6)= A(2,6)
+      A(5,1)= A(5,1)
+      A(5,2)= A(5,2)
       IF(NNSOL.EQ.1)GO TO 112
       SO=DSIN(-S*XX)
       CO=DCOS(-S*XX)
@@ -100,7 +102,7 @@ C     IF(NNSOL.EQ.1)RETURN
       A(7,6)=-AGP1*(XX-A(2,6))*LZI+XX*LZI
       A(8,6)= AGP1*(XX-A(2,6))*MZI-XX*MZI
       A(9,6)=-AGP1*(XX-A(2,6))*NZI+XX*NZI
-  112 CONTINUE 
+  112 CONTINUE
 C======Damping: ignoring 1/RHO**2 terms
       A(6,6)=A(6,6)-CRAD*XX*XX*2.D0/YY            *NDAMP3*IDAMPFLG
       RETURN
@@ -137,14 +139,30 @@ C     IF(NNSOL.NE.2)RETURN
       A(8,4)= AGP1*(A(4,4)-1.D0)*MXM
       A(9,4)=-AGP1*(A(4,4)-1.D0)*NXM
   113 CONTINUE
-      IF(NM(1:1).EQ.'E')RETURN     !Kill radiation in edge fields.
-      XY7=CRAD*2.D0*XX*XX/YY                      *NDAMP3*IDAMPFLG 
-      A(6,6)=A(6,6)-XY7*(DELX*DELX+DELY*DELY)    
-      A(6,1)=-XY7*DELX                           
-      A(6,3)=-XY7*DELY  
+      IF(NNSOL.EQ.999)THEN  ! HORIZONTAL EDGE FIELD
+C       WRITE(*,*) X2, XX, A(2,1), AP1, LZM
+        A(7,3)=-AGP1* A(4,3)*LXM + AP1*X2*LSM
+        A(8,3)= AGP1* A(4,3)*MXM - AP1*X2*MSM
+        A(9,3)=-AGP1* A(4,3)*NXM + AP1*X2*NSM
+C       WRITE(*,*) "THIS IS THE EDGE"
+        RETURN
+      ELSEIF(NNSOL.EQ.998)THEN  ! VERTICAL EDGE FIELD
+C       WRITE(*,*) X2, XX, A(2,1), AP1, LZM
+        A(7,1)= AGP1* A(2,1)*LZM - AP1*X2*LSM
+        A(8,1)=-AGP1* A(2,1)*MZM + AP1*X2*MSM
+        A(9,1)= AGP1* A(2,1)*NZM - AP1*X2*NSM
+C       WRITE(*,*) "THIS IS THE EDGE"
+        RETURN
+      ELSE  ! REGULAR QUADRUPOLE
+C     WRITE(*,*) "THIS IS THE QUAD"
+      ENDIF
+      XY7=CRAD*2.D0*XX*XX/YY                      *NDAMP3*IDAMPFLG
+      A(6,6)=A(6,6)-XY7*(DELX*DELX+DELY*DELY)
+      A(6,1)=-XY7*DELX
+      A(6,3)=-XY7*DELY
       RETURN
 C
-C=====SKEW QUADS. 
+C=====SKEW QUADS.
    14 AGP1=(1.+S)
 C=====ALEX NEVER INCLUDED SPIN TERMS TO CORRESPOND TO THE COL.6 TERMS.
 C     A(2,6)= XX*DELY
@@ -168,9 +186,9 @@ C     A(5,3)=-XX*DELX
       A(8,4)=-AGP1*(A(2,4)*MZM-(A(2,2)-1.D0)*MXM)
       A(9,4)= AGP1*(A(2,4)*NZM-(A(2,2)-1.D0)*NXM)
   114 CONTINUE
-      XY7=CRAD*2.D0*XX*XX/YY                      *NDAMP3*IDAMPFLG 
-      A(6,6)=A(6,6)-XY7*(DELX*DELX+DELY*DELY)    
-      A(6,1)=-XY7*DELX                           
+      XY7=CRAD*2.D0*XX*XX/YY                      *NDAMP3*IDAMPFLG
+      A(6,6)=A(6,6)-XY7*(DELX*DELX+DELY*DELY)
+      A(6,1)=-XY7*DELX
       A(6,3)=-XY7*DELY
       RETURN
 C
@@ -190,7 +208,7 @@ C     A(6,5)=0.D0
       A(9,4)= TEMP*NXM
   115 CONTINUE
       A(2,2)=A(2,2)-(YY+XX*DELE)                  *NDAMP3*IDAMPFLG
-      A(4,4)=A(2,2)   
+      A(4,4)=A(2,2)
       RETURN
 C
 C=====VERTICAL DIPOLES
@@ -228,7 +246,7 @@ C
       A(7,6)= AGP1*(XX-A(4,6))*LXI-XX*LXI
       A(8,6)=-AGP1*(XX-A(4,6))*MXI+XX*MXI
       A(9,6)= AGP1*(XX-A(4,6))*NXI-XX*NXI
-  117 CONTINUE 
+  117 CONTINUE
 C======Damping: ignoring 1/RHO**2 terms
       A(6,6)=A(6,6)-CRAD*XX*XX*2.D0/YY            *NDAMP3*IDAMPFLG
       RETURN
@@ -243,9 +261,9 @@ C=====HORIZONTAL KICKER.
       A(7,6)=   XX*LZM
       A(8,6)=  -XX*MZM
       A(9,6)=   XX*NZM
-  118 CONTINUE 
-C======Damping: 
-      A(6,6)=A(6,6)-CRAD*XX*XX*2.D0/YY            *NDAMP3*IDAMPFLG  
+  118 CONTINUE
+C======Damping:
+      A(6,6)=A(6,6)-CRAD*XX*XX*2.D0/YY            *NDAMP3*IDAMPFLG
       RETURN
 C
 C=====VERTICAL KICKER.
@@ -258,9 +276,9 @@ C=====VERTICAL KICKER.
       A(7,6)=   XX*LXM
       A(8,6)=  -XX*MXM
       A(9,6)=   XX*NXM
-  119 CONTINUE 
-C======Damping: 
-      A(6,6)=A(6,6)-CRAD*XX*XX*2.D0/YY            *NDAMP3*IDAMPFLG  
+  119 CONTINUE
+C======Damping:
+      A(6,6)=A(6,6)-CRAD*XX*XX*2.D0/YY            *NDAMP3*IDAMPFLG
       RETURN
 C
 C=====SEXTUPOLE:CODE AS THIN LENS BETWEEN 2 HALF DRIFTS.
