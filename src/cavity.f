@@ -1,5 +1,5 @@
 C   13/09/83 510021909  MEMBER NAME  CAVITY   (SEPT95.S)    FORTRAN
-      SUBROUTINE CAVITY(E0,U0,RLENGE,CRAD,RADSTR)
+      SUBROUTINE CAVITY(E0,IE0,U0,RLENGE,CRAD,RADSTR)
 C
 C
 C=====ROUTINE TO SET UP SINE AND COSINE CAVITY STRENGTH TERMS.
@@ -20,7 +20,8 @@ C
 C
       IMPLICIT REAL*8(A-H,O-Z)
       SAVE ICALL
-      SAVE SINPHI                                          !Needed for the G95 compiler.
+      SAVE SINPHI
+      SAVE RADLOS                                          !Needed for the G95 compiler.
       DATA ICALL/0/
 C     DIMENSION VOLT(100).....now stored in clatic.for
 C
@@ -30,6 +31,10 @@ C
 C
 C
 C
+
+      WRITE(53,929)IE0,ICALL,U0
+ 929  FORMAT('1','Entering subroutine CAVITY, Energy step = ',
+     +  I5,'  ICALL = ', I5,'   U0(MeV) = ', F10.4)
       PI=3.1415926535897932D0
       RADCON=8.85D-5/(2.D0*PI)
       IF(ICALL.EQ.1)GO TO 3
@@ -110,5 +115,9 @@ C
 C
 C
       ICALL=1
+
+C      WRITE(53,9299)U0,ICALL
+C 9299 FORMAT('0','U0, ICALL ', F10.4, I5)
+
       RETURN
       END

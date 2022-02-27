@@ -38,6 +38,9 @@ C
       PI=3.1415926535897932D0
 C
 C
+      WRITE(53,929)IE0,U0
+ 929  FORMAT('1','Entering subroutine DAMPER, Energy step = ',I5,
+     + '  U0(MeV) = ',F10.4)
 C
 
 
@@ -161,7 +164,7 @@ C
      +    T7,'REAL',           T18,6(1X,F11.6),/,
      +    T7,'IMAG',           T18,6(1X,F11.6),/,
      +    T7,'ABS ',           T18,6(1X,F11.6),/,
-     +    T3,'DAMPING CONST.', T18,6(1X,F11.6),'  2U0/E= ',F9.5/,
+     +    T3,'DAMPING CONST.', T18,6(1X,F11.6),'  2U0/E0= ',F9.5/,
      +    T3,'PARTITION NO.',  T18,6(1X,F11.6),/,
      +    T3,'DAMP.TIME(MSEC)',T18,6(1X,F11.6))
 C

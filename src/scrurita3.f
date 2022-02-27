@@ -191,10 +191,11 @@ C====Naive spin tune.
 
 
 C     MODES = 1                 !Switch on/off single and combined mode calcs.
-      WRITE(53,929)MODES,IE0
+      WRITE(53,929)MODES,IE0,E0, SEED(1)
   929 FORMAT('1','Entering subroutine SCRURITA3 for M-C tracking to ``me
-     +asure'' the rate of depolarisation.', '   MODES = ',I2,
-     +                                      '  Energy step =  ',I5)
+     +asure'' the rate of depolarisation.', / '   MODES = ', I2,
+     +  '  Energy step =  ', I5, ' Energy = ', F10.4, ' GeV',
+     + ' SEED(1) for big photons = ', I10)
 
 C      write(*,929)
 
@@ -1138,18 +1139,19 @@ C    Combined modes 1 and 2.
 C      IF(1.EQ.1)STOP
 
 
-      IF(IE0.EQ.1)THEN
+C      IF(IE0.EQ.1)THEN
       COVMAT  = COVMATIN *1.D-6
       SCALEMAT= SCALEMAT *1.D-6
       TDAMP   = TDAMP*1.D-3
-      ENDIF
+C      ENDIF
 
       CTIME =  CIR/3.0D8
       DAMPTURNS = TDAMP(5)/CTIME/NDAMP3
       WRITE(53,103)
       WRITE(53,103)
-      WRITE(53,'(A,F8.1,A,I3)')' Turns per sync. damping time',
-     +                       DAMPTURNS,'  NDAMP3=', NDAMP3
+      WRITE(53,'(A,F8.1,A,I3,F8.1,F20.8)')
+     + ' Turns per sync. damping time',
+     + DAMPTURNS,'  NDAMP3=', NDAMP3,CIR,TDAMP(5)
       NDAMPTURNS = DAMPTURNS
 
 
@@ -1348,10 +1350,10 @@ C   reversed.
 
       DO 777 IQQ = 1,NPART3
 C    All orbital modes together.
-C    If want to turn off the synchrotron side-band effect, RB(2) =  0.5D0*SPINKICKA(3,IQQ) *(0.D0)
+C    To turn off the synchrotron side-band effect, RB(2) =  0.5D0*SPINKICKA(3,IQQ) *(0.D0)
       RB(0) =  1.0D0
       RB(1) =  0.5D0*SPINKICKA(1,IQQ)
-      RB(2) =  0.5D0*SPINKICKA(3,IQQ) *(1.D0)
+      RB(2) =  0.5D0*SPINKICKA(3,IQQ) *(0.D0)
       RB(3) = -0.5D0*SPINKICKA(2,IQQ)
 
 C    Check the size of kicks. Search for the largest on the last turn
@@ -1480,6 +1482,11 @@ C      IF(BIGP.LT.0.D0)BIGPHOT(IPHS) = -1.D0  ! TH
 C      WRITE(53,'(A,I10,E20.8);')'Bigphot ',IPHS,BIGPHOT(IPHS)
 C      IF(IPHS.EQ.16)WRITE(53,'(A,E24.12)')'Photon ',
 C     +                 BIGPHOT(IPHS) * DSQRT(PSCALE(II)*SYNCON)*RADFAC
+       I0 = 10 * E0
+       IF(INT.EQ.1.AND.IDT.EQ.1.AND.IPHS.LT.9.AND.II.EQ.1.AND.I0.EQ.52)
+     + WRITE(53,'(A,4I10,E20.8)')
+     + 'Bigphot: ',INT,IDT,II,IPHS,BIGPHOT(IPHS)
+     +  * DSQRT(PSCALE(II)*SYNCON)*RADFAC
    55 CONTINUE
 
       ENDIF

@@ -28,7 +28,8 @@ C
       INCLUDE "cemit.for"
 C
 C
-
+      WRITE(53,929)IE0
+ 929  FORMAT('1','Entering subroutine EMITNC, Energy step = ', I5)
 C
 C
       PI=3.1415926535897932D0

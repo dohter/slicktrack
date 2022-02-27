@@ -40,6 +40,8 @@ C
       PI2=2.D0*PI
 C
 C
+      WRITE(53,929)IE0
+  929 FORMAT('1','Entering subroutine PERTOP, Energy step = ',I5) 
 C
       IT=ITYPE(1)
       DO 10 I=1,6
@@ -345,6 +347,8 @@ C      IF(1.EQ.1)STOP
 C
 C
 C
+
+
       RETURN
  9999 WRITE(53,921)
   921 FORMAT(' ERROR IN EIGEN VALUE ROUTINE')
@@ -360,8 +364,8 @@ C
      +    ,T20,'POS--',T31,'ETAX--',T42,'ETAXP--',T53,
      +                  'ETAY--',T64,'ETAYP--',T75,'BETAX--',T86,
      +                                                   'BETAY--'/)
-  912 FORMAT(1H1,' PERTURBED MACHINE PARAMETERS:',/,T6,'MOM.COMP.',
-     >    'FACTOR =',F13.6,/,T5,'SYN.RAD.LOSS =',F13.6,'  MEV')
+  912 FORMAT(1H1,' PERTURBED MACHINE PARAMETERS:',/,T5,'MOM.COMP.',
+     >    'FACTOR =',F13.6,/,T5,'SYN.RAD.LOSS    =',F13.6,'  MEV')
   913 FORMAT(///,' PERTURBED TOTAL TRANSF. AROUND THE 1-ST ELEMENT')
  9133 FORMAT(///,' PERTURBED TOTAL TRANSF. AROUND THE 1-ST ELEMENT',
      +             '--WITHOUT CAVITIES')
